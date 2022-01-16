@@ -98,6 +98,7 @@
 - name: Install cargo-update.
   block:
     - name: Install cargo-update's dependencies.
+      become: true
       ansible.builtin.apt:
         name: libssl-dev
         state: present
