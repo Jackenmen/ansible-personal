@@ -48,6 +48,14 @@
 - name: Install Google Chrome.
   become: true
   block:
+    - name: Prevent Google Chrome package from adding its own GPG key.
+      ansible.builtin.copy:
+        dest: /etc/default/google-chrome
+        content: |
+          echo -n '/etc/default/google-chrome has prevented Google Chrome'
+          echo    ' package from adding gpg key to /etc/apt/trusted.gpg.d/'
+          exit 0
+
     - name: Add the Google Chrome repository.
       ansible.builtin.apt_repository:
         # This needs to be exactly 'google-chrome' to prevent Google Chrome
@@ -100,6 +108,14 @@
 - name: Install Microsoft Edge.
   become: true
   block:
+    - name: Prevent Microsoft Edge package from adding its own GPG key.
+      ansible.builtin.copy:
+        dest: /etc/default/microsoft-edge
+        content: |
+          echo -n '/etc/default/microsoft-edge has prevented Microsoft Edge'
+          echo    ' package from adding gpg key to /etc/apt/trusted.gpg.d/'
+          exit 0
+
     - name: Add the Microsoft Edge repository.
       ansible.builtin.apt_repository:
         # This needs to be exactly 'microsoft-edge' to prevent Microsoft Edge
