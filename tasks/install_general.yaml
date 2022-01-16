@@ -155,7 +155,7 @@
     - name: Add the Microsoft Teams repository.
       ansible.builtin.apt_repository:
         repo: >-
-          deb [arch=amd64 signed-by=microsoft-archive-keyring.gpg]
+          deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
           https://packages.microsoft.com/repos/ms-teams stable main
         state: present
 
