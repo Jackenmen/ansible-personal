@@ -206,6 +206,7 @@
         state: present
 
 - name: Install PlayOnLinux and winbind (Office's requirement).
+  become: true
   ansible.builtin.apt:
     name:
       - playonlinux
