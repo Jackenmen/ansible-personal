@@ -92,7 +92,9 @@
 - name: Set custom opacity in Opacify Windows extension.
   ansible.builtin.template:
     src: templates/opacify@anish.org.json.j2
-    dest: "{{ ansible_user_dir }}/.cinnamon/configs/opacify@anish.org/opacify@anish.org.json"
+    dest: "{{ item }}"
+  vars:
+    item: "{{ ansible_user_dir }}/.cinnamon/configs/opacify@anish.org/opacify@anish.org.json"
 
 - name: Disable Show desktop applet.
   block:
