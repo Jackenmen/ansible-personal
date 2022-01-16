@@ -26,9 +26,12 @@
           - git
         state: present
 
+    # snap is required to install chezmoi
+    - include_tasks: tasks/install_snap.yaml
+    - include_tasks: tasks/install_dotfiles.yaml
+
     - include_tasks: tasks/add_repository_keys.yaml
 
-    - include_tasks: tasks/install_snap.yaml
     - include_tasks: tasks/install_appimaged.yaml
     - include_tasks: tasks/install_language_runtimes.yaml
 
@@ -42,7 +45,6 @@
     - include_tasks: tasks/configure_desktop_environment.yaml
     - include_tasks: tasks/configure_services.yaml
     - include_tasks: tasks/prepare_dev_environment.yaml
-    - include_tasks: tasks/install_dotfiles.yaml
 
     # things to do post-provisioning:
     # - Copy over `~/.gnupg/pubring.kbx` and `~/.gnupg/private-keys-v1.d/`.
