@@ -7,6 +7,7 @@
       ansible.builtin.apt_repository:
         repo: ppa:deadsnakes/ppa
         codename: "{{ ubuntu_codename }}"
+        state: present
 
     - name: Install pip.
       ansible.builtin.apt:

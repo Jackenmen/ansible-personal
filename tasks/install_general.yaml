@@ -70,6 +70,7 @@
       ansible.builtin.apt_repository:
         repo: ppa:inkscape.dev/stable
         codename: "{{ ubuntu_codename }}"
+        state: present
 
     - name: Install Inkscape.
       ansible.builtin.apt:
@@ -88,6 +89,7 @@
     - name: Add the Kdenlive repository.
       ansible.builtin.apt_repository:
         repo: ppa:kdenlive/kdenlive-stable
+        codename: "{{ ubuntu_codename }}"
         state: present
 
     - name: Install Kdenlive.
@@ -133,6 +135,7 @@
     - name: Add OBS Studio repository.
       ansible.builtin.apt_repository:
         repo: ppa:obsproject/obs-studio
+        codename: "{{ ubuntu_codename }}"
         state: present
 
     - name: Install OBS Studio.
@@ -229,6 +232,7 @@
       ansible.builtin.apt_repository:
         repo: ppa:shutter/ppa
         codename: "{{ ubuntu_codename }}"
+        state: present
 
     - name: Install Shutter.
       ansible.builtin.apt:
