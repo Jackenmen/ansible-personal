@@ -38,10 +38,11 @@
 
     - name: Enable the new services.
       ansible.builtin.systemd:
-        name:
-          - turn_displays_and_speakers_on
-          - turn_displays_and_speakers_off
+        name: "{{ item }}"
         enabled: true
+      loop:
+        - turn_displays_and_speakers_on
+        - turn_displays_and_speakers_off
 
 - name: Enable Redshift service.
   ansible.builtin.systemd:
