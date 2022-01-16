@@ -119,10 +119,11 @@
 
 - name: Set default browser to Google Chrome.
   community.general.alternatives:
-    name:
-      - x-www-browser
-      - gnome-www-browser
+    name: "{{ item }}"
     path: /usr/bin/google-chrome-stable
+  loop:
+    - x-www-browser
+    - gnome-www-browser
 
 - name: Setup keyboard shortcuts.
   block:
