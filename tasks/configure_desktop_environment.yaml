@@ -146,17 +146,17 @@
         key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom{{ item.index }}/{{ item.key }}
         value: "{{ item.value }}"
       loop:
-        - { index: 0, key: name, value: "'Take a screenshot of a region'" }
-        - { index: 0, key: binding, value: "['Print']" }
-        - { index: 0, key: command, value: "'shutter --select'" }
+        - {index: 0, key: name, value: "'Take a screenshot of a region'"}
+        - {index: 0, key: binding, value: "['Print']"}
+        - {index: 0, key: command, value: "'shutter --select'"}
 
-        - { index: 1, key: name, value: "'Take a screenshot of the entire screen'" }
-        - { index: 1, key: binding, value: "['<Primary>Print']" }
-        - { index: 1, key: command, value: "'shutter --full'" }
+        - {index: 1, key: name, value: "'Take a screenshot of the entire screen'"}
+        - {index: 1, key: binding, value: "['<Primary>Print']"}
+        - {index: 1, key: command, value: "'shutter --full'"}
 
-        - { index: 2, key: name, value: "'Disable Insert Key'" }
-        - { index: 2, key: binding, value: "['Insert']" }
-        - { index: 2, key: command, value: "'/bin/true'" }
+        - {index: 2, key: name, value: "'Disable Insert Key'"}
+        - {index: 2, key: binding, value: "['Insert']"}
+        - {index: 2, key: command, value: "'/bin/true'"}
 
     - name: Save custom keybindings.
       community.general.dconf:
