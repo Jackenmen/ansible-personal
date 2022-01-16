@@ -1,13 +1,20 @@
 ---
 - name: Disable hibernation.
   become: true
-  ansible.builtin.copy:
-    dest: /etc/systemd/sleep.conf.d/nohibernation.conf
-    content: |
-      [Sleep]
-      AllowHibernation=no
-      AllowSuspendThenHibernate=no
-      AllowHybridSleep=no
+  block:
+    - name: Create /etc/systemd/sleep.conf.d directory
+      ansible.builtin.file:
+        path: /etc/systemd/sleep.conf.d
+        state: directory
+
+    - name: Create nohibernation.conf file.
+      ansible.builtin.copy:
+        dest: /etc/systemd/sleep.conf.d/nohibernation.conf
+        content: |
+          [Sleep]
+          AllowHibernation=no
+          AllowSuspendThenHibernate=no
+          AllowHybridSleep=no
 
 - name: Set Super key as special key to move and resize Windows ("Alt snap").
   community.general.dconf:
