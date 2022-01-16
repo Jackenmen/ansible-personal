@@ -98,7 +98,7 @@
     state: present
 
 - name: Install little-helpers.
-  ansible.builtin.git:
+  ansible.builtin.git:  # noqa git-latest
     repo: https://github.com/jack1142/little-helpers
     dest: "{{ ansible_user_dir }}/little-helpers"
     update: false
