@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/ansible-community/ansible-lint
+    rev: v5.3.2
+    hooks:
+      - id: ansible-lint
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args:
+          - "--fix=lf"
+
+      # Trailing whitespace is evil
+      - id: trailing-whitespace
+
+      # Ensure that links to code on GitHub use the permalinks
+      - id: check-vcs-permalinks
+
+      # Checks for git-related issues
+      - id: check-case-conflict
+      - id: check-merge-conflict
