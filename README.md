@@ -6,7 +6,7 @@ Ansible playbooks I use for provisioning my computers.
 
 To automatically clone this repository, install Ansible, and execute the playbook, run this one-liner:
 ```bash
-wget -O - https://github.com/jack1142/ansible-personal/raw/main/download.sh | bash
+bash <(wget -qO - https://github.com/jack1142/ansible-personal/raw/main/download.sh)
 ```
 
 In future, to provision the machine, run:
