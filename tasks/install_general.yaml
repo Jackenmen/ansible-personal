@@ -107,7 +107,7 @@
         filename: microsoft-edge
         repo: >-
           deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
-          https://packages.microsoft.com/repos/edge stable main
+          https://packages.microsoft.com/repos/edge/ stable main
         state: present
 
     - name: Install Microsoft Edge.
