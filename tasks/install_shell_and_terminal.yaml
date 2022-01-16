@@ -1,0 +1,44 @@
+---
+- name: Install zsh.
+  become: true
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+
+- name: Install sheldon.
+  community.general.cargo:
+    name: sheldon
+    state: present
+
+- name: Install fzf.
+  become: true
+  ansible.builtin.apt:
+    name: fzf
+    state: present
+
+- name: Install kitty.
+  block:
+    - name: Install kitty.
+      ansible.builtin.command:
+        stdin: "{{ lookup('ansible.builtin.url', kitty_installer_url, split_lines=False) }}"
+        cmd: sh /dev/stdin launch=n
+        creates: "{{ ansible_user_dir }}/.local/kitty.app/bin/kitty"
+      vars:
+        kitty_installer_url: https://sw.kovidgoyal.net/kitty/installer.sh
+
+    - name: Symlink kitty executable.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.local/kitty"
+        src: "{{ ansible_user_dir }}/.local/kitty.app/bin/kitty"
+        state: link
+
+    - name: Create desktop shortcut.
+      ansible.builtin.template:
+        src: templates/kitty.desktop.j2
+        dest: "{{ ansible_user_dir }}/.local/share/applications/kitty.desktop"
+
+    - name: Set kitty as default terminal.
+      community.general.dconf:
+        key: /org/cinnamon/desktop/applications/terminal/exec
+        value: "'kitty --single-instance'"
+        state: present

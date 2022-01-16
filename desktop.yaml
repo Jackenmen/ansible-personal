@@ -1,0 +1,51 @@
+---
+- name: Provision desktop.
+  hosts: localhost
+  connection: local
+
+  vars:
+    ubuntu_codename: >-
+      {{
+        lookup('file', '/etc/os-release')
+        | regex_search('^UBUNTU_CODENAME=(.*)$', '\1', multiline=True)
+        | first
+      }}
+
+  tasks:
+    - name: Gather the package facts.
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Ensure basic utilities are present.
+      become: true
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - build-essential
+          - curl
+          - git
+        state: present
+
+    - include_tasks: tasks/add_repository_keys.yaml
+
+    - include_tasks: tasks/install_snap.yaml
+    - include_tasks: tasks/install_appimaged.yaml
+    - include_tasks: tasks/install_language_runtimes.yaml
+
+    - include_tasks: tasks/install_shell_and_terminal.yaml
+    - include_tasks: tasks/install_devtools_cli.yaml
+    - include_tasks: tasks/install_devtools_gui.yaml
+    - include_tasks: tasks/install_fonts.yaml
+    - include_tasks: tasks/install_desktop_environment_extensions.yaml
+    - include_tasks: tasks/install_general.yaml
+
+    - include_tasks: tasks/configure_desktop_environment.yaml
+    - include_tasks: tasks/configure_services.yaml
+    - include_tasks: tasks/prepare_dev_environment.yaml
+    - include_tasks: tasks/install_dotfiles.yaml
+
+    # things to do post-provisioning:
+    # - Copy over `~/.gnupg/pubring.kbx` and `~/.gnupg/private-keys-v1.d/`.
+    # - Copy over `~/.config/redial/sessions`.
+    # - Run `gh auth login`.
+    # - Add GitHub token to Sublime Text's MarkdownPreview package settings.

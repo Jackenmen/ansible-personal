@@ -1,0 +1,12 @@
+---
+- name: Install chezmoi.
+  become: true
+  community.general.snap:
+    name: chezmoi
+    classic: true
+    state: present
+
+- name: Provision dotfiles with chezmoi.
+  ansible.builtin.command:
+    cmd: chezmoi init --apply jack1142
+    creates: "{{ ansible_user_dir }}/.local/share/chezmoi/.git/HEAD"

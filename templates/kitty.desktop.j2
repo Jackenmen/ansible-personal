@@ -1,0 +1,9 @@
+{% set kitty_share = ansible_user_dir + '/.local/kitty.app/share' %}
+{{
+    lookup('ansible.builtin.file', kitty_share + '/applications/kitty.desktop')
+    | replace(
+        '\nIcon=kitty\n',
+        '\nIcon=' + kitty_share + '/icons/hicolor/256x256/apps/kitty.png\n',
+    )
+    | replace('\nExec=kitty\n', '\nExec=kitty --single-instance\n')
+}}

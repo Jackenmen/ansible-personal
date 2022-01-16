@@ -1,0 +1,78 @@
+---
+- name: Install Insomnia.
+  become: true
+  community.general.snap:
+    name: insomnia
+    state: present
+
+- name: Install Meld.
+  become: true
+  ansible.builtin.apt:
+    name: meld
+    state: present
+
+- name: Install Postman.
+  become: true
+  community.general.snap:
+    name: postman
+    state: present
+
+- name: Install PyCharm.
+  become: true
+  community.general.snap:
+    name: pycharm-professional
+    classic: true
+    state: present
+
+- name: Install Sublime Text and Sublime Merge.
+  become: true
+  block:
+    - name: Add the Sublime HQ repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/sublimehq-archive-keyring.gpg]
+          https://download.sublimetext.com/ apt/stable/
+        state: present
+
+    - name: Install Sublime Text and Merge.
+      ansible.builtin.apt:
+        name:
+          - sublime-text
+          - sublime-merge
+        state: present
+
+- name: Install VirtualBox.
+  become: true
+  ansible.builtin.apt:
+    name: virtualbox
+    state: present
+
+- name: Install Vagrant.
+  become: true
+  block:
+    - name: Add the Hashicorp repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
+          https://apt.releases.hashicorp.com {{ ubuntu_codename }} main
+        state: present
+
+    - name: Install Vagrant.
+      ansible.builtin.apt:
+        name: vagrant
+        state: present
+
+- name: Install Visual Studio Code.
+  become: true
+  block:
+    - name: Add the Visual Studio Code repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
+          https://packages.microsoft.com/repos/code stable main
+        state: present
+
+    - name: Install Visual Studio Code.
+      ansible.builtin.apt:
+        name: code
+        state: present

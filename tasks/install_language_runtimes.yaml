@@ -1,0 +1,100 @@
+---
+# Python
+- name: Install full Python 3.8, 3.9, and 3.10.
+  become: true
+  block:
+    - name: Add the deadsnakes repository.
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        codename: "{{ ubuntu_codename }}"
+
+    - name: Install pip.
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
+
+    - name: Install Python 3.8.
+      ansible.builtin.apt:
+        name:
+          - python3.8
+          - python3.8-dev
+          - python3.8-venv
+        state: present
+
+    - name: Install Python 3.9.
+      ansible.builtin.apt:
+        name:
+          - python3.9
+          - python3.9-dev
+          - python3.9-venv
+        state: present
+
+    - name: Install Python 3.10.
+      ansible.builtin.apt:
+        name:
+          - python3.10
+          - python3.10-dev
+          - python3.10-venv
+        state: present
+
+- name: Ensure python is python3.
+  become: true
+  ansible.builtin.apt:
+    name: python-is-python3
+    state: present
+
+- name: Install pipx.
+  ansible.builtin.pip:
+    name: pipx
+    extra_args: --user
+    state: present
+
+# Java
+- name: Install Java OpenJDK 11.
+  ansible.builtin.apt:
+    name: openjdk-11-jre-headless
+    state: present
+
+# Node
+- name: Install Node.js LTS (16.x).
+  become: true
+  block:
+    - name: Add the NodeSource repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/nodesource-archive-keyring.gpg]
+          https://deb.nodesource.com/node_16.x {{ ubuntu_codename }} main
+        state: present
+
+    - name: Install Node.js LTS (16.x).
+      ansible.builtin.apt:
+        name: nodejs
+        state: present
+
+- name: Enable npm's corepack.
+  become: true
+  ansible.builtin.command:
+    cmd: corepack enable
+    creates: /usr/bin/yarn
+
+# Rust
+- name: Install Rust.
+  block:
+    - name: Install rustup.
+      become: true
+      community.general.snap:
+        name: rustup
+        classic: true
+        state: present
+
+    - name: Install latest stable Rust toolchain.
+      ansible.builtin.command:
+        cmd: rustup toolchain install stable-x86_64-unknown-linux-gnu
+        creates: "{{ rustup_home }}/toolchains/stable-x86_64-unknown-linux-gnu"
+      vars:
+        rustup_home: "{{ ansible_user_dir }}/snap/rustup/common/rustup"
+
+- name: Install cargo-update.
+  community.general.cargo:
+    name: cargo-update
+    state: present

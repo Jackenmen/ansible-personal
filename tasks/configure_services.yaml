@@ -1,0 +1,51 @@
+---
+- name: Add services for turning displays and speakers on and off.
+  become: true
+  block:
+    - name: Add turn_displays_and_speakers_on service file.
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/turn_displays_and_speakers_on.service
+        content: |
+          [Unit]
+          Description=Turn on the speakers and monitors on startup.
+          After=multi-user.target
+          After=network-online.target
+          Wants=network-online.target
+
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/bin/curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_on
+          RemainAfterExit=yes
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Add turn_displays_and_speakers_off service file.
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/turn_displays_and_speakers_off.service
+        content: |
+          [Unit]
+          Description=Turn off the speakers and monitors on shutdown.
+          Before=poweroff.target suspend.target
+
+          [Service]
+          Type=oneshot
+          ExecStart=/usr/bin/curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_off
+          RemainAfterExit=yes
+
+          [Install]
+          WantedBy=poweroff.target suspend.target
+
+    - name: Enable the new services.
+      ansible.builtin.systemd:
+        name:
+          - turn_displays_and_speakers_on
+          - turn_displays_and_speakers_off
+        enabled: true
+
+- name: Enable Redshift service.
+  ansible.builtin.systemd:
+    name: redshift-gtk
+    scope: user
+    enabled: true
+    state: started

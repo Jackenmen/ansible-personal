@@ -1,0 +1,38 @@
+---
+- name: Install go-appimage.
+  block:
+    - name: Install desktop-file-utils in case it isn't already installed.
+      become: true
+      ansible.builtin.apt:
+        name: desktop-file-utils
+        state: present
+
+    - name: Get latest release data for go-appimage.
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/jack1142/go-appimage/releases/tags/continuous
+      register: go_appimage_release_data
+
+    - name: Download go-appimage to ~/Applications folder.
+      ansible.builtin.get_url:
+        url: |-
+          {{
+            go_appimage_release_data.json.assets
+            | map(attribute='browser_download_url')
+            | select('search', 'appimaged-\d+-x86_64\.AppImage$')
+            | first
+          }}
+        dest: "{{ ansible_user_dir }}/Applications"
+        mode: +x
+      register: go_appimage_executable_data
+
+    # This weird construct is used to be able to run this as regular user
+    # but not be asked for sudo password when the application uses it.
+    - name: Install go-appimage.
+      become: true
+      ansible.builtin.command:
+        argv:
+          - sudo
+          - -u
+          - "{{ ansible_user_id }}"
+          - "{{ go_appimage_executable_data.dest }}"
+        creates: "{{ ansible_user_dir }}/.config/systemd/user/appimaged.service"

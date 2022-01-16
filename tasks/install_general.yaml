@@ -1,0 +1,292 @@
+---
+- name: Install Audacity.
+  become: true
+  ansible.builtin.apt:
+    name: audacity
+    state: present
+
+- name: Install Discord.
+  become: true
+  when: "'discord' not in ansible_facts.packages"
+  ansible.builtin.apt:
+    deb: https://discord.com/api/download?platform=linux&format=deb
+    state: present
+
+- name: Install drawio.
+  become: true
+  community.general.snap:
+    name: drawio
+    state: present
+
+- name: Install ffmpeg.
+  become: true
+  ansible.builtin.apt:
+    name: ffmpeg
+    state: present
+
+- name: Install Enpass.
+  become: true
+  block:
+    - name: Add the Enpass repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/enpass-archive-keyring.gpg]
+          https://apt.enpass.io/ stable main
+        state: present
+
+    - name: Install Enpass.
+      ansible.builtin.apt:
+        name: enpass
+        state: present
+
+- name: Install GIMP.
+  become: true
+  ansible.builtin.apt:
+    name: gimp
+    state: present
+
+- name: Install Google Chrome.
+  become: true
+  block:
+    - name: Add the Google Chrome repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/google-archive-keyring.gpg]
+          https://dl.google.com/linux/chrome/deb/ stable main
+        state: present
+
+    - name: Install Google Chrome.
+      ansible.builtin.apt:
+        name: google-chrome-stable
+        state: present
+
+- name: Install Inkscape.
+  become: true
+  block:
+    - name: Add Inkscape stable repository
+      ansible.builtin.apt_repository:
+        repo: ppa:inkscape.dev/stable
+        codename: "{{ ubuntu_codename }}"
+
+    - name: Install Inkscape.
+      ansible.builtin.apt:
+        name: inkscape
+        state: present
+
+- name: Install JDownloader 2.
+  become: true
+  community.general.snap:
+    name: jdownloader2
+    state: present
+
+- name: Install Kdenlive.
+  become: true
+  block:
+    - name: Add the Kdenlive repository.
+      ansible.builtin.apt_repository:
+        repo: ppa:kdenlive/kdenlive-stable
+        state: present
+
+    - name: Install Kdenlive.
+      ansible.builtin.apt:
+        name: kdenlive
+        state: present
+
+- name: Install Microsoft Edge.
+  become: true
+  block:
+    - name: Add the Microsoft Edge repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
+          https://packages.microsoft.com/repos/edge stable main
+        state: present
+
+    - name: Install Microsoft Edge.
+      ansible.builtin.apt:
+        name: microsoft-edge-stable
+        state: present
+
+- name: Install MKVToolNix.
+  become: true
+  block:
+    - name: Add the MKVToolNix repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/mkvtoolnix-archive-keyring.gpg]
+          https://mkvtoolnix.download/ubuntu/ {{ ubuntu_codename }} main
+        state: present
+
+    - name: Install MKVToolNix.
+      ansible.builtin.apt:
+        name:
+          - mkvtoolnix
+          - mkvtoolnix-gui
+        state: present
+
+- name: Install OBS Studio.
+  become: true
+  block:
+    - name: Add OBS Studio repository.
+      ansible.builtin.apt_repository:
+        repo: ppa:obsproject/obs-studio
+        state: present
+
+    - name: Install OBS Studio.
+      ansible.builtin.apt:
+        name: obs-studio
+        state: present
+
+- name: Install Opera.
+  become: true
+  community.general.snap:
+    name: opera
+    state: present
+
+- name: Install Microsoft Teams.
+  become: true
+  block:
+    - name: Add the Microsoft Teams repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=microsoft-archive-keyring.gpg]
+          https://packages.microsoft.com/repos/ms-teams stable main
+        state: present
+
+    - name: Install Microsoft Teams.
+      ansible.builtin.apt:
+        name: teams
+        state: present
+
+- name: Install OnlyOffice.
+  become: true
+  block:
+    - name: Add the OnlyOffice repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/onlyoffice-archive-keyring.gpg]
+          https://download.onlyoffice.com/repo/debian squeeze main
+        state: present
+
+    - name: Install OnlyOffice.
+      ansible.builtin.apt:
+        name: onlyoffice-desktopeditors
+        state: present
+
+- name: Install PeaZip.
+  when: "'peazip' not in ansible_facts.packages"
+  block:
+    - name: Get latest release data for PeaZip.
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/peazip/PeaZip/releases/latest
+      register: peazip_release_data
+
+    - name: Download and install peazip deb.
+      become: true
+      ansible.builtin.apt:
+        deb: |-
+          {{
+            peazip_release_data.json.assets
+            | map(attribute='browser_download_url')
+            | select('search', 'GTK2-1_amd64\.deb$')
+            | first
+          }}
+        state: present
+
+- name: Install PlayOnLinux and winbind (Office's requirement).
+  ansible.builtin.apt:
+    name:
+      - playonlinux
+      - winbind
+
+- name: Install Plex Media Player.
+  block:
+    - name: Add Plex Media Player flatpak repository.
+      become: true
+      community.general.flatpak_remote:
+        name: plex-media-player
+        flatpakrepo_url: https://flatpak.knapsu.eu/plex-media-player.flatpakrepo
+        state: present
+
+    - name: Install Plex Media Player.
+      community.general.flatpak:
+        name: plex-media-player
+        state: present
+
+- name: Install PulseAudio Volume Control (pavucontrol).
+  become: true
+  ansible.builtin.apt:
+    name: pavucontrol
+    state: present
+
+- name: Install Shutter.
+  become: true
+  block:
+    - name: Add Shutter stable repository
+      ansible.builtin.apt_repository:
+        repo: ppa:shutter/ppa
+        codename: "{{ ubuntu_codename }}"
+
+    - name: Install Shutter.
+      ansible.builtin.apt:
+        name: shutter
+        state: present
+
+    - name: Install gnome-web-photo for full website screenshots capture support.
+      ansible.builtin.apt:
+        name: gnome-web-photo
+        state: present
+
+    - name: Install gir1.2-appindicator3-0.1 for tray icon support.
+      ansible.builtin.apt:
+        name: gir1.2-appindicator3-0.1
+        state: present
+
+- name: Install Spotify.
+  become: true
+  community.general.snap:
+    name: spotify
+    state: present
+
+- name: Install Steam.
+  become: true
+  ansible.builtin.apt:
+    name: steam
+    state: present
+
+- name: Install Teamviewer.
+  become: true
+  ansible.builtin.apt:
+    deb: https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
+    state: present
+
+- name: Install TeX Live.
+  become: true
+  ansible.builtin.apt:
+    name: texlive-full
+    state: present
+
+- name: Install Unified Remote Server (urserver).
+  become: true
+  when: "'urserver' not in ansible_facts.packages"
+  ansible.builtin.apt:
+    deb: https://www.unifiedremote.com/download/linux-x64-deb
+    state: present
+
+- name: Install VLC.
+  become: true
+  ansible.builtin.apt:
+    name: vlc
+    state: present
+
+- name: Install qBittorrent.
+  become: true
+  ansible.builtin.apt:
+    name: qbittorrent
+    state: present
+
+- name: Install QDirStat.
+  become: true
+  ansible.builtin.apt:
+    name: qdirstat
+    state: present

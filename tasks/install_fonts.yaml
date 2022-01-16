@@ -1,0 +1,109 @@
+---
+- name: Install Microsoft's TrueType core fonts for the Web.
+  become: true
+  block:
+    - name: Accept EULA for Microsoft software.
+      ansible.builtin.debconf:
+        name: ttf-mscorefonts-installer
+        question: msttcorefonts/accepted-mscorefonts-eula
+        value: "true"
+        vtype: select
+
+    - name: Install Microsoft's TrueType core fonts for the Web.
+      ansible.builtin.apt:
+        name: ttf-mscorefonts-installer
+        state: present
+
+- name: Install Inconsolata font.
+  become: true
+  block:
+    - name: Create Inconsolata folder.
+      ansible.builtin.file:
+        path: /usr/local/share/fonts/Inconsolata
+        state: directory
+      register: inconsolata
+
+    - name: Download and unzip Inconsolata font.
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: https://fonts.google.com/download?family=Inconsolata
+        dest: /usr/local/share/fonts/Inconsolata
+        extra_opts:
+          - -j
+        include:
+          - static/*
+      when: inconsolata.changed
+  rescue:
+    - name: Remove Inconsolata folder.
+      ansible.builtin.file:
+        path: /usr/local/share/fonts/Inconsolata
+        state: absent
+    - name: Re-raise the error.
+      fail:
+        msg: "{{ ansible_failed_result }}"
+
+- name: Install Source Code Pro font.
+  become: true
+  block:
+    - name: Create SourceCodePro folder.
+      ansible.builtin.file:
+        path: /usr/local/share/fonts/SourceCodePro
+        state: directory
+      register: sourcecodepro
+
+    - name: Download and unzip Source Code Pro font.
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: https://fonts.google.com/download?family=Source%20Code%20Pro
+        dest: /usr/local/share/fonts/SourceCodePro
+        extra_opts:
+          - -j
+        include:
+          - static/*
+      when: sourcecodepro.changed
+  rescue:
+    - name: Remove SourceCodePro folder.
+      ansible.builtin.file:
+        path: /usr/local/share/fonts/SourceCodePro
+        state: absent
+    - name: Re-raise the error.
+      fail:
+        msg: "{{ ansible_failed_result }}"
+
+- name: Install SauceCodePro Nerd Font Mono font.
+  become: true
+  block:
+    - name: Create SauceCodePro folder.
+      ansible.builtin.file:
+        path: /usr/local/share/fonts/SauceCodePro
+        state: directory
+      register: saucecodepro
+
+    - name: Download and unzip SauceCodePro Nerd Font Mono font.
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/SourceCodePro.zip
+        dest: /usr/local/share/fonts/SauceCodePro
+      when: saucecodepro.changed
+
+    - name: Find Windows Compatible versions of the font.
+      ansible.builtin.find:
+        paths: /usr/local/share/fonts/SauceCodePro
+        patterns: "* Windows Compatible.ttf"
+      register: saucecodepro_find_results
+      when: saucecodepro.changed
+
+    - name: Remove Windows Compatible versions of the font.
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ saucecodepro_find_results.files }}"
+      when: saucecodepro.changed
+  rescue:
+    - name: Remove SauceCodePro folder.
+      ansible.builtin.file:
+        path: /usr/local/share/fonts/SauceCodePro
+        state: absent
+    - name: Re-raise the error.
+      fail:
+        msg: "{{ ansible_failed_result }}"

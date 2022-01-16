@@ -1,0 +1,170 @@
+---
+- name: Install pinentry-qt and set it as pinentry alternative.
+  become: true
+  block:
+    - name: Install pinentry-qt.
+      ansible.builtin.apt:
+        name: pinentry-qt
+        state: present
+
+    - name: Set pinentry-qt as pinentry alternative.
+      community.general.alternatives:
+        name: pinentry
+        path: /usr/bin/pinentry-qt
+
+- name: Install bat.
+  community.general.cargo:
+    name: bat
+    state: present
+
+- name: Install cloc.
+  become: true
+  ansible.builtin.apt:
+    name: cloc
+    state: present
+
+- name: Install cppcheck.
+  become: true
+  ansible.builtin.apt:
+    name: cppcheck
+    state: present
+
+- name: Install diagnostic-languageserver.
+  community.general.yarn:
+    name: diagnostic-languageserver
+    global: true
+    state: present
+
+- name: Install exa.
+  community.general.cargo:
+    name: exa
+    state: present
+
+- name: Install git-delete-merged-branches.
+  community.general.pipx:
+    name: git-delete-merged-branches
+    state: present
+
+- name: Install git-delta.
+  community.general.cargo:
+    name: git-delta
+    state: present
+
+- name: Install git-interactive-rebase-tool.
+  community.general.cargo:
+    name: git-interactive-rebase-tool
+    state: present
+
+- name: Install Git Credential Manager (gcmcore).
+  when: "'gcmcore' not in ansible_facts.packages"
+  block:
+    - name: Get latest release data for Git Credential Manager.
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/GitCredentialManager/git-credential-manager/releases/latest
+      register: gcm_release_data
+
+    - name: Download and install gcmcore deb.
+      become: true
+      ansible.builtin.apt:
+        deb: |-
+          {{
+            gcm_release_data.json.assets
+            | map(attribute='browser_download_url')
+            | select('search', '\.deb$')
+            | first
+          }}
+        state: present
+
+- name: Install GitHub CLI (gh).
+  become: true
+  block:
+    - name: Add the GitHub CLI repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg]
+          https://cli.github.com/packages stable main
+        state: present
+
+    - name: Install GitHub CLI (gh).
+      ansible.builtin.apt:
+        name: gh
+        state: present
+
+- name: Install heroku-cli.
+  become: true
+  community.general.snap:
+    name: heroku
+    classic: true
+    state: present
+
+- name: Install little-helpers.
+  ansible.builtin.git:
+    repo: https://github.com/jack1142/little-helpers
+    dest: "{{ ansible_user_dir }}/little-helpers"
+    update: false
+
+- name: Install micro.
+  become: true
+  community.general.snap:
+    name: micro
+    classic: true
+    state: present
+
+- name: Install mitmproxy.
+  community.general.pipx:
+    name: mitmproxy
+    state: present
+
+- name: Install neofetch.
+  become: true
+  ansible.builtin.apt:
+    name: neofetch
+    state: present
+
+- name: Install Pandoc.
+  become: true
+  ansible.builtin.apt:
+    name: pandoc
+    state: present
+
+- name: Install pre-commit.
+  community.general.pipx:
+    name: pre-commit
+    state: present
+
+- name: Install python-launcher.
+  community.general.cargo:
+    name: python-launcher
+    state: present
+
+- name: Install redial.
+  community.general.pipx:
+    name: redial
+    source: git+https://github.com/jack1142/redial@kitty
+    state: present
+
+- name: Install ripgrep.
+  community.general.cargo:
+    name: ripgrep
+    state: present
+
+- name: Install shellcheck.
+  become: true
+  ansible.builtin.apt:
+    name: shellcheck
+    state: present
+
+- name: Install tealdeer.
+  community.general.cargo:
+    name: tealdeer
+    state: present
+
+- name: Install trash-cli.
+  community.general.pipx:
+    name: trash-cli
+    state: present
+
+- name: Install virtualenv.
+  community.general.pipx:
+    name: virtualenv
+    state: present

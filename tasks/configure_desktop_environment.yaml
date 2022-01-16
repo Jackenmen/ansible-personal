@@ -1,0 +1,153 @@
+---
+- name: Disable hibernation.
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/systemd/sleep.conf.d/nohibernation.conf
+    content: |
+      [Sleep]
+      AllowHibernation=no
+      AllowSuspendThenHibernate=no
+      AllowHybridSleep=no
+
+- name: Set Super key as special key to move and resize Windows ("Alt snap").
+  community.general.dconf:
+    key: /org/cinnamon/desktop/wm/preferences/mouse-button-modifier
+    value: "'<Super>'"
+    state: present
+
+- name: Make mouse scroll on title bar shade and unshade the window.
+  community.general.dconf:
+    key: /org/cinnamon/desktop/wm/preferences/action-scroll-titlebar
+    value: "'shade'"
+    state: present
+
+- name: Maximize, instead of tile, when dragging a window to the top edge.
+  community.general.dconf:
+    key: /org/cinnamon/muffin/tile-maximize
+    value: "true"
+    state: present
+
+- name: Ensure Opacify Windows Cinnamon extension is installed and enabled.
+  block:
+    - name: Download and install Opacify Windows.
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: "https://cinnamon-spices.linuxmint.com/files/extensions/opacify@anish.org.zip?time={{ ansible_local_time.epoch }}"
+        dest: "{{ ansible_user_dir }}/.local/share/cinnamon/extensions"
+        creates: "{{ ansible_user_dir }}/.local/share/cinnamon/extensions/opacify@anish.org"
+
+    - name: Enable Opacify Windows.
+      community.general.dconf:
+        key: /org/cinnamon/enabled-extensions
+        value: "['opacify@anish.org']"
+        state: present
+
+- name: Show date and seconds in system clock.
+  community.general.dconf:
+    key:
+      - /org/cinnamon/desktop/interface/clock-show-date
+      - /org/cinnamon/desktop/interface/clock-show-seconds
+    value: "true"
+    state: present
+
+- name: Set Monday as first day of week in the calendar.
+  community.general.dconf:
+    key: /org/cinnamon/desktop/interface/first-day-of-week
+    value: "1"
+    state: present
+
+- name: Set power button to suspend.
+  community.general.dconf:
+    key: /org/cinnamon/settings-daemon/plugins/power/button-power
+    value: "'suspend'"
+    state: present
+
+- name: Set custom system clock format.
+  ansible.builtin.template:
+    src: templates/calendar@cinnamon.org.json.j2
+    dest: "{{ item }}"
+  with_fileglob:
+    - "{{ ansible_user_dir }}/.cinnamon/configs/calendar@cinnamon.org/*.json"
+
+- name: Set application shortcuts on taskbar.
+  ansible.builtin.template:
+    src: templates/grouped-window-list@cinnamon.org.json.j2
+    dest: "{{ item }}"
+  with_fileglob:
+    - "{{ ansible_user_dir }}/.cinnamon/configs/grouped-window-list@cinnamon.org/*.json"
+  vars:
+    pinned_apps:
+      - nemo.desktop
+      - google-chrome.desktop
+      - org.gnome.Calculator.desktop
+
+- name: Set custom opacity in Opacify Windows extension.
+  ansible.builtin.template:
+    src: templates/opacify@anish.org.json.j2
+    dest: "{{ ansible_user_dir }}/.cinnamon/configs/opacify@anish.org/opacify@anish.org.json"
+
+- name: Disable Show desktop applet.
+  block:
+    - name: Get current enabled applets.
+      community.general.dconf:
+        key: /org/cinnamon/enabled-applets
+        state: read
+      register: enabled_applets
+
+    - name: Set enabled applets without Show desktop applet.
+      community.general.dconf:
+        key: /org/cinnamon/enabled-applets
+        value: |-
+          {{
+            enabled_applets.value
+            | from_yaml
+            | reject('match', '.*show-desktop@cinnamon\.org.*')
+            | list
+            | string
+          }}
+        state: present
+
+- name: Set default browser to Google Chrome.
+  block:
+    community.general.alternatives:
+      name:
+        - x-www-browser
+        - gnome-www-browser
+      path: /usr/bin/google-chrome-stable
+
+- name: Setup keyboard shortcuts.
+  block:
+    - name: Disable default screenshot shortcuts.
+      community.general.dconf:
+        key:
+          - /org/cinnamon/desktop/keybindings/media-keys/area-screenshot
+          - /org/cinnamon/desktop/keybindings/media-keys/window-screenshot-clip
+          - /org/cinnamon/desktop/keybindings/media-keys/window-screenshot
+          - /org/cinnamon/desktop/keybindings/media-keys/screenshot-clip
+          - /org/cinnamon/desktop/keybindings/media-keys/screenshot
+          - /org/cinnamon/desktop/keybindings/media-keys/area-screenshot-clip
+          - /org/cinnamon/desktop/keybindings/wm/toggle-recording
+        value: '@as []'
+        state: present
+
+    - name: Configure custom keybindings.
+      community.general.dconf:
+        key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom{{ item.index }}/{{ item.key }}
+        value: "{{ item.value }}"
+      loop:
+        - { index: 0, key: name, value: "'Take a screenshot of a region'" }
+        - { index: 0, key: binding, value: "['Print']" }
+        - { index: 0, key: command, value: "'shutter --select'" }
+
+        - { index: 1, key: name, value: "'Take a screenshot of the entire screen'" }
+        - { index: 1, key: binding, value: "['<Primary>Print']" }
+        - { index: 1, key: command, value: "'shutter --full'" }
+
+        - { index: 2, key: name, value: "'Disable Insert Key'" }
+        - { index: 2, key: binding, value: "['Insert']" }
+        - { index: 2, key: command, value: "'/bin/true'" }
+
+    - name: Save custom keybindings.
+      community.general.dconf:
+        key: /org/cinnamon/desktop/keybindings/custom-list
+        value: "['__dummy__', 'custom0', 'custom1', 'custom2']"
