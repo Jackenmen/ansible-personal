@@ -223,7 +223,8 @@
 
     - name: Install Plex Media Player.
       community.general.flatpak:
-        name: plex-media-player
+        remote: plex-media-player
+        name: tv.plex.PlexMediaPlayer
         state: present
 
 - name: Install PulseAudio Volume Control (pavucontrol).
