@@ -51,11 +51,12 @@
 
 - name: Show date and seconds in system clock.
   community.general.dconf:
-    key:
-      - /org/cinnamon/desktop/interface/clock-show-date
-      - /org/cinnamon/desktop/interface/clock-show-seconds
+    key: "{{ item }}"
     value: "true"
     state: present
+  loop:
+    - /org/cinnamon/desktop/interface/clock-show-date
+    - /org/cinnamon/desktop/interface/clock-show-seconds
 
 - name: Set Monday as first day of week in the calendar.
   community.general.dconf:
@@ -125,16 +126,17 @@
   block:
     - name: Disable default screenshot shortcuts.
       community.general.dconf:
-        key:
-          - /org/cinnamon/desktop/keybindings/media-keys/area-screenshot
-          - /org/cinnamon/desktop/keybindings/media-keys/window-screenshot-clip
-          - /org/cinnamon/desktop/keybindings/media-keys/window-screenshot
-          - /org/cinnamon/desktop/keybindings/media-keys/screenshot-clip
-          - /org/cinnamon/desktop/keybindings/media-keys/screenshot
-          - /org/cinnamon/desktop/keybindings/media-keys/area-screenshot-clip
-          - /org/cinnamon/desktop/keybindings/wm/toggle-recording
+        key: "{{ item }}"
         value: '@as []'
         state: present
+      loop:
+        - /org/cinnamon/desktop/keybindings/media-keys/area-screenshot
+        - /org/cinnamon/desktop/keybindings/media-keys/window-screenshot-clip
+        - /org/cinnamon/desktop/keybindings/media-keys/window-screenshot
+        - /org/cinnamon/desktop/keybindings/media-keys/screenshot-clip
+        - /org/cinnamon/desktop/keybindings/media-keys/screenshot
+        - /org/cinnamon/desktop/keybindings/media-keys/area-screenshot-clip
+        - /org/cinnamon/desktop/keybindings/wm/toggle-recording
 
     - name: Configure custom keybindings.
       community.general.dconf:
