@@ -102,6 +102,9 @@
   block:
     - name: Add the Microsoft Edge repository.
       ansible.builtin.apt_repository:
+        # This needs to be exactly 'microsoft-edge' to prevent Microsoft Edge
+        # from adding this repository for the second time.
+        filename: microsoft-edge
         repo: >-
           deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
           https://packages.microsoft.com/repos/edge stable main
