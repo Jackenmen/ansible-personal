@@ -67,6 +67,9 @@
   block:
     - name: Add the Visual Studio Code repository.
       ansible.builtin.apt_repository:
+        # This needs to be exactly 'vscode' to prevent VS Code
+        # from adding this repository for the second time.
+        filename: vscode
         repo: >-
           deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
           https://packages.microsoft.com/repos/code stable main
