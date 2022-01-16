@@ -157,6 +157,9 @@
   block:
     - name: Add the Microsoft Teams repository.
       ansible.builtin.apt_repository:
+        # This needs to be exactly 'teams' to prevent Microsoft Teams
+        # from adding this repository for the second time.
+        filename: teams
         repo: >-
           deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
           https://packages.microsoft.com/repos/ms-teams stable main
