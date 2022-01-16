@@ -50,6 +50,9 @@
   block:
     - name: Add the Google Chrome repository.
       ansible.builtin.apt_repository:
+        # This needs to be exactly 'google-chrome' to prevent Google Chrome
+        # from adding this repository for the second time.
+        filename: google-chrome
         repo: >-
           deb [arch=amd64 signed-by=/usr/share/keyrings/google-archive-keyring.gpg]
           https://dl.google.com/linux/chrome/deb/ stable main
