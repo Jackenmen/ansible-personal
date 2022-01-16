@@ -95,6 +95,13 @@
         rustup_home: "{{ ansible_user_dir }}/snap/rustup/common/rustup"
 
 - name: Install cargo-update.
-  community.general.cargo:
-    name: cargo-update
-    state: present
+  block:
+    - name: Install cargo-update's dependencies.
+      ansible.builtin.apt:
+        name: libssl-dev
+        state: present
+
+    - name: Install cargo-update.
+      community.general.cargo:
+        name: cargo-update
+        state: present
