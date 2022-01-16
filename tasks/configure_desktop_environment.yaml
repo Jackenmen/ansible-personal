@@ -39,7 +39,7 @@
     - name: Download and install Opacify Windows.
       ansible.builtin.unarchive:
         remote_src: true
-        src: "https://cinnamon-spices.linuxmint.com/files/extensions/opacify@anish.org.zip?time={{ ansible_local_time.epoch }}"
+        src: "https://cinnamon-spices.linuxmint.com/files/extensions/opacify@anish.org.zip?time={{ ansible_date_time.epoch }}"
         dest: "{{ ansible_user_dir }}/.local/share/cinnamon/extensions"
         creates: "{{ ansible_user_dir }}/.local/share/cinnamon/extensions/opacify@anish.org"
 
