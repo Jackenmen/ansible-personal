@@ -1,12 +1,8 @@
 ---
 - name: Install go-appimage.
+  tags:
+    - no-ci  # this task doesn't work in CI, probably due to no desktop environment
   block:
-    - name: Install desktop-file-utils in case it isn't already installed.
-      become: true
-      ansible.builtin.apt:
-        name: desktop-file-utils
-        state: present
-
     - name: Get latest release data for go-appimage.
       ansible.builtin.uri:
         url: https://api.github.com/repos/jack1142/go-appimage/releases/tags/continuous

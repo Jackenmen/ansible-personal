@@ -27,7 +27,7 @@ jobs:
         run: ansible-playbook desktop.yaml --syntax-check
 
       - name: Test the playbook.
-        run: ansible-playbook -v desktop.yaml
+        run: ansible-playbook --skip-tags no-ci -v desktop.yaml
         env:
           ANSIBLE_FORCE_COLOR: "1"
 
