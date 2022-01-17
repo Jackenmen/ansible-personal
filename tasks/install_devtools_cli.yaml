@@ -91,6 +91,8 @@
         state: present
 
 - name: Install heroku-cli.
+  tags:
+    - no-ci
   become: true
   community.general.snap:
     name: heroku
