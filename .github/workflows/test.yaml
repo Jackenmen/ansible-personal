@@ -25,15 +25,15 @@ jobs:
 
       - name: Ansible version and configuration debug information.
         run: |
-          ansible --version
-          ansible-galaxy collection list
-          ansible-config dump --only-changed
+          /usr/bin/ansible --version
+          /usr/bin/ansible-galaxy collection list
+          /usr/bin/ansible-config dump --only-changed
 
       - name: Test the playbook's syntax.
-        run: ansible-playbook desktop.yaml --syntax-check
+        run: /usr/bin/ansible-playbook desktop.yaml --syntax-check
 
       - name: Test the playbook.
-        run: ansible-playbook --skip-tags no-ci -v desktop.yaml
+        run: /usr/bin/ansible-playbook --skip-tags no-ci -v desktop.yaml
         env:
           ANSIBLE_FORCE_COLOR: "1"
 
