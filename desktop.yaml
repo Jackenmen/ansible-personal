@@ -46,8 +46,4 @@
     - include_tasks: tasks/configure_services.yaml
     - include_tasks: tasks/prepare_dev_environment.yaml
 
-    # things to do post-provisioning:
-    # - Copy over `~/.gnupg/pubring.kbx` and `~/.gnupg/private-keys-v1.d/`.
-    # - Copy over `~/.config/redial/sessions`.
-    # - Run `gh auth login`.
-    # - Add GitHub token to Sublime Text's MarkdownPreview package settings.
+    # See README for things to do post-provisioning.
