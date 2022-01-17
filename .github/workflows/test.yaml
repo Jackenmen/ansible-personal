@@ -23,6 +23,12 @@ jobs:
       - name: Install Ansible roles.
         run: ansible-galaxy install -r requirements.yaml
 
+      - name: Ansible version and configuration debug information.
+        run: |
+          ansible --version
+          ansible-galaxy collection list
+          ansible-config dump --only-changed
+
       - name: Test the playbook's syntax.
         run: ansible-playbook desktop.yaml --syntax-check
 
