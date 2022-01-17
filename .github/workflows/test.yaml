@@ -15,9 +15,10 @@ jobs:
       # Checkout repository
       - uses: actions/checkout@v2
 
-      - name: Add missing ~/.local/share/applications directory.
+      - name: Make necessary changes to CI environment.
         run: |
           mkdir -p ~/.local/share/applications
+          sudo apt install dbus dconf-cli python3-psutil
 
       - name: Install Ansible
         run: |
