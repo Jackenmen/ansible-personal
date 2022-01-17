@@ -93,8 +93,8 @@
   ansible.builtin.template:
     src: templates/opacify@anish.org.json.j2
     dest: "{{ item }}"
-  vars:
-    item: "{{ ansible_user_dir }}/.cinnamon/configs/opacify@anish.org/opacify@anish.org.json"
+  with_fileglob:
+    - "{{ ansible_user_dir }}/.cinnamon/configs/opacify@anish.org/opacify@anish.org.json"
 
 - name: Disable Show desktop applet.
   block:
