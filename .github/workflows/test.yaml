@@ -14,6 +14,9 @@ jobs:
     steps:
       # Checkout repository
       - uses: actions/checkout@v2
+      - name: Ensure that the repository's directory is not world-writable.
+        run: |
+          chmod o-w "$GITHUB_WORKSPACE"
 
       - name: Make necessary changes to CI environment.
         run: |
@@ -26,7 +29,7 @@ jobs:
           sudo apt install -y ansible
 
       - name: Install Ansible roles.
-        run: ansible-galaxy install -r requirements.yaml
+        run: /usr/bin/ansible-galaxy install -r requirements.yaml
 
       - name: Ansible version and configuration debug information.
         run: |
