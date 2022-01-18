@@ -1,5 +1,7 @@
 ---
 - name: Install extensions for Nemo (file manager).
+  tags:
+    - no-ci
   become: true
   ansible.builtin.apt:
     name:
