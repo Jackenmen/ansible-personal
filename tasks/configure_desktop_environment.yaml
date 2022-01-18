@@ -97,6 +97,8 @@
     - "{{ ansible_user_dir }}/.cinnamon/configs/opacify@anish.org/opacify@anish.org.json"
 
 - name: Disable Show desktop applet.
+  tags:
+    - no-ci  # can't read a value in CI as it is not already set
   block:
     - name: Get current enabled applets.
       community.general.dconf:
