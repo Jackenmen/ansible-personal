@@ -27,6 +27,9 @@ jobs:
           mkdir -p ~/.cinnamon/configs/opacify@anish.org
           sudo apt install dbus dconf-cli flatpak python3-psutil
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          sudo apt-add-repository -y multiverse
+          sudo apt-add-repository -y restricted
+          sudo apt update
 
       - name: Install Ansible
         run: |
