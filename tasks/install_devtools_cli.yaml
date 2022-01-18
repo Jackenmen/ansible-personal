@@ -92,7 +92,7 @@
 
 - name: Install heroku-cli.
   tags:
-    - no-ci
+    - no-ci  # https://github.com/heroku/cli/issues/1919
   become: true
   community.general.snap:
     name: heroku
