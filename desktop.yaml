@@ -27,23 +27,23 @@
         state: present
 
     # snap is required to install chezmoi
-    - include_tasks: tasks/install_snap.yaml
-    - include_tasks: tasks/install_dotfiles.yaml
+    - import_tasks: tasks/install_snap.yaml
+    - import_tasks: tasks/install_dotfiles.yaml
 
-    - include_tasks: tasks/add_repository_keys.yaml
+    - import_tasks: tasks/add_repository_keys.yaml
 
-    - include_tasks: tasks/install_appimaged.yaml
-    - include_tasks: tasks/install_language_runtimes.yaml
+    - import_tasks: tasks/install_appimaged.yaml
+    - import_tasks: tasks/install_language_runtimes.yaml
 
-    - include_tasks: tasks/install_shell_and_terminal.yaml
-    - include_tasks: tasks/install_devtools_cli.yaml
-    - include_tasks: tasks/install_devtools_gui.yaml
-    - include_tasks: tasks/install_fonts.yaml
-    - include_tasks: tasks/install_desktop_environment_extensions.yaml
-    - include_tasks: tasks/install_general.yaml
+    - import_tasks: tasks/install_shell_and_terminal.yaml
+    - import_tasks: tasks/install_devtools_cli.yaml
+    - import_tasks: tasks/install_devtools_gui.yaml
+    - import_tasks: tasks/install_fonts.yaml
+    - import_tasks: tasks/install_desktop_environment_extensions.yaml
+    - import_tasks: tasks/install_general.yaml
 
-    - include_tasks: tasks/configure_desktop_environment.yaml
-    - include_tasks: tasks/configure_services.yaml
-    - include_tasks: tasks/prepare_dev_environment.yaml
+    - import_tasks: tasks/configure_desktop_environment.yaml
+    - import_tasks: tasks/configure_services.yaml
+    - import_tasks: tasks/prepare_dev_environment.yaml
 
     # See README for things to do post-provisioning.
