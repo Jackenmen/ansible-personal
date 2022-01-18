@@ -229,9 +229,9 @@
       - winbind
 
 - name: Install Plex Media Player.
+  become: true
   block:
     - name: Add Plex Media Player flatpak repository.
-      become: true
       community.general.flatpak_remote:
         name: plex-media-player
         flatpakrepo_url: https://flatpak.knapsu.eu/plex-media-player.flatpakrepo
