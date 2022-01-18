@@ -21,7 +21,8 @@ jobs:
       - name: Make necessary changes to CI environment.
         run: |
           mkdir -p ~/.local/share/applications
-          sudo apt install dbus dconf-cli python3-psutil
+          sudo apt install dbus dconf-cli flatpak python3-psutil
+          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Install Ansible
         run: |
