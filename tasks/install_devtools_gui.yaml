@@ -41,6 +41,14 @@
           - sublime-merge
         state: present
 
+- name: Install Docker and docker-compose.
+  become: true
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-compose
+    state: present
+
 - name: Install VirtualBox.
   become: true
   ansible.builtin.apt:
