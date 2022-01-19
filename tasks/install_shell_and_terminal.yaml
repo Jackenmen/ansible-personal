@@ -42,3 +42,8 @@
         key: /org/cinnamon/desktop/applications/terminal/exec
         value: "'kitty --single-instance'"
         state: present
+
+- name: Change current user's login shell to zsh.
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
