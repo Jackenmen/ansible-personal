@@ -2,5 +2,5 @@
     lookup('file', item)
     | from_json
     | combine({'opacity': {'value': 150.0}}, recursive=True)
-    | to_nice_json
+    | to_nice_json(sort_keys=False)
 }}
