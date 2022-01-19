@@ -167,6 +167,34 @@
     - x-www-browser
     - gnome-www-browser
 
+- name: Set the list of favourite apps.
+  community.general.dconf:
+    key: /org/cinnamon/favorite-apps
+    value: "{{ favourite_apps | string }}"
+  vars:
+    favourite_apps:
+      - kitty.desktop
+      - sublime_text.desktop
+      - sublime_merge.desktop
+      - google-chrome.desktop
+      - firefox.desktop
+      - enpass.desktop
+      - xed.desktop
+      - discord.desktop
+      - microsoft-edge.desktop
+      - opera_opera.desktop
+      - tv.plex.PlexMediaPlayer.desktop:flatpak
+      - spotify_spotify.desktop
+      - steam.desktop
+      - gimp.desktop
+      - org.inkscape.Inkscape.desktop
+      - onlyoffice-desktopeditors.desktop
+      - insomnia_insomnia.desktop
+      - virtualbox.desktop
+      - virt-manager.desktop
+      - com.obsproject.Studio.desktop
+      - org.gnome.Calculator.desktop
+
 - name: Setup keyboard shortcuts.
   block:
     - name: Disable default screenshot shortcuts.
