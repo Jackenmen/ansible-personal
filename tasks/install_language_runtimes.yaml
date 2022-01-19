@@ -76,8 +76,8 @@
 - name: Enable npm's corepack.
   become: true
   ansible.builtin.command:
-    cmd: corepack enable
-    creates: /usr/bin/yarn
+    cmd: corepack enable --install-directory /usr/local/bin
+    creates: /usr/local/bin/yarn
 
 # Rust
 - name: Install Rust.
