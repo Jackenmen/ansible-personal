@@ -28,7 +28,7 @@
 
     - name: Symlink kitty executable.
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/kitty"
+        path: "{{ ansible_user_dir }}/.local/bin/kitty"
         src: "{{ ansible_user_dir }}/.local/kitty.app/bin/kitty"
         state: link
 
