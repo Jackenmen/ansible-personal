@@ -89,12 +89,14 @@
         classic: true
         state: present
 
+    - name: Set fact about RUSTUP_HOME.
+      ansible.builtin.set_fact:
+        rustup_home: "{{ lookup('pipe', 'rustup show home') }}"
+
     - name: Install latest stable Rust toolchain.
       ansible.builtin.command:
         cmd: rustup toolchain install stable-x86_64-unknown-linux-gnu
         creates: "{{ rustup_home }}/toolchains/stable-x86_64-unknown-linux-gnu"
-      vars:
-        rustup_home: "{{ ansible_user_dir }}/snap/rustup/common/rustup"
 
 - name: Install cargo-update.
   block:
