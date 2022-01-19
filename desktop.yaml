@@ -35,10 +35,10 @@
     - import_tasks: tasks/install_appimaged.yaml
     - import_tasks: tasks/install_language_runtimes.yaml
 
+    - import_tasks: tasks/install_fonts.yaml
     - import_tasks: tasks/install_shell_and_terminal.yaml
     - import_tasks: tasks/install_devtools_cli.yaml
     - import_tasks: tasks/install_devtools_gui.yaml
-    - import_tasks: tasks/install_fonts.yaml
     - import_tasks: tasks/install_desktop_environment_extensions.yaml
     - import_tasks: tasks/install_general.yaml
 
