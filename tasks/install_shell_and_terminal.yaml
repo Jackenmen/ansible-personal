@@ -49,6 +49,7 @@
         state: present
 
 - name: Change current user's login shell to zsh.
+  become: true
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /bin/zsh
