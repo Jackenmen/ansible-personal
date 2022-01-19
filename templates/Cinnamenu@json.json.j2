@@ -1,0 +1,10 @@
+{% set current_config = lookup('file', item) | from_json %}
+{% set new_config = lookup('file', 'files/Cinnamenu@json.json') | from_json %}
+{{
+    new_config
+    | combine(
+        {'recent-apps': {'value': current_config['recent-apps']['value']}},
+        recursive=True,
+    )
+    | to_nice_json(ensure_ascii=False)
+}}

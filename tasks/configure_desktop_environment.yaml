@@ -119,6 +119,46 @@
           }}
         state: present
 
+- name: Use Cinnamenu applet instead of the default menu applet.
+  block:
+    - name: Download and install Cinnamenu.
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: "https://cinnamon-spices.linuxmint.com/files/applets/Cinnamenu@json.zip?time={{ ansible_date_time.epoch }}"
+        dest: "{{ ansible_user_dir }}/.local/share/cinnamon/applets"
+        creates: "{{ ansible_user_dir }}/.local/share/cinnamon/applets/Cinnamenu@json"
+
+    - name: Configure Cinnamenu.
+      ansible.builtin.template:
+        src: templates/Cinnamenu@json.json.j2
+        dest: "{{ item }}"
+      with_fileglob:
+        - "{{ ansible_user_dir }}/.cinnamon/configs/Cinnamenu@json/0.json"
+
+    - name: Get current enabled applets.
+      community.general.dconf:
+        key: /org/cinnamon/enabled-applets
+        state: read
+      register: enabled_applets
+
+    - name: Replace menu@cinnamon.org applet with Cinnamenu@json.
+      community.general.dconf:
+        key: /org/cinnamon/enabled-applets
+        value: |-
+          {{
+            enabled_applets.value
+            | from_yaml
+            | map('regex_replace', '^(.*):menu@cinnamon\.org:0$', '\1:Cinnamenu@json:0')
+            | list
+            | string
+          }}
+        state: present
+
+    - name: Remove configuration file for menu@cinnamon.org.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.cinnamon/configs/menu@cinnamon.org/0.json"
+        state: absent
+
 - name: Set default browser to Google Chrome.
   community.general.alternatives:
     name: "{{ item }}"

@@ -8,7 +8,9 @@ repos:
     rev: v4.1.0
     hooks:
       - id: end-of-file-fixer
+        exclude: '^templates/Cinnamenu@json\.json\.j2$'
       - id: mixed-line-ending
+        exclude: '^templates/Cinnamenu@json\.json\.j2$'
         args:
           - "--fix=lf"
 
