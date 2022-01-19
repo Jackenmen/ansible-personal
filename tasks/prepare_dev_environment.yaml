@@ -4,6 +4,14 @@
     path: "{{ ansible_user_dir }}/work"
     state: directory
 
+- name: Import my public GPG keys.
+  ansible.builtin.command:
+    cmd: gpg --import files/mypublickeys.asc
+  register: gpg_public_key_import
+  changed_when: >-
+    'imported: ' in gpg_public_key_import.stderr
+    and 'imported: 0' not in gpg_public_key_import.stderr
+
 - name: Ultimately trust my GPG key.
   ansible.builtin.command:
     stdin: "{{ my_key }}"
