@@ -1,4 +1,9 @@
 ---
+- name: Create ~/.local/bin folder.
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+
 - name: Install zsh.
   become: true
   ansible.builtin.apt:
