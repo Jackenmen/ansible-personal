@@ -193,6 +193,11 @@
         name: teams
         state: present
 
+    - name: Create ~/.config/Microsoft/Microsoft Teams directory.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.config/Microsoft/Microsoft Teams"
+        state: directory
+
     - name: Disable auto-start of MS Teams.
       ansible.builtin.template:
         src: templates/ms-teams-desktop-config.json.j2
