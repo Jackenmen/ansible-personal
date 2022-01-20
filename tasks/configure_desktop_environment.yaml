@@ -128,12 +128,17 @@
         dest: "{{ ansible_user_dir }}/.local/share/cinnamon/applets"
         creates: "{{ ansible_user_dir }}/.local/share/cinnamon/applets/Cinnamenu@json"
 
+    - name: Create ~/.cinnamon/configs/Cinnamenu@json directory.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.cinnamon/configs/Cinnamenu@json"
+        state: directory
+
     - name: Configure Cinnamenu.
       ansible.builtin.template:
         src: templates/Cinnamenu@json.json.j2
         dest: "{{ item }}"
-      with_fileglob:
-        - "{{ ansible_user_dir }}/.cinnamon/configs/Cinnamenu@json/0.json"
+      vars:
+        item: "{{ ansible_user_dir }}/.cinnamon/configs/Cinnamenu@json/0.json"
 
     - name: Get current enabled applets.
       community.general.dconf:

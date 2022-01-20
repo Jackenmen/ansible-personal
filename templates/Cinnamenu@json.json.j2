@@ -1,4 +1,9 @@
-{% set current_config = lookup('file', item) | from_json %}
+{%
+    set current_config = (
+        lookup('file', item, errors='ignore') or '{"recent-apps": {"value": []}}'
+        | from_json
+    )
+%}
 {% set new_config = lookup('file', 'files/Cinnamenu@json.json') | from_json %}
 {{
     new_config
