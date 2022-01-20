@@ -3,6 +3,11 @@
   tags:
     - no-ci  # this task doesn't work in CI, probably due to no desktop environment
   block:
+    - name: Create ~/Applications folder.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Applications"
+        state: directory
+
     - name: Get latest release data for go-appimage.
       ansible.builtin.uri:
         url: https://api.github.com/repos/jack1142/go-appimage/releases/tags/continuous
