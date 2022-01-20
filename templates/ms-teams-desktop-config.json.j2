@@ -1,0 +1,6 @@
+{{
+    (lookup('file', item, errors='ignore') or '{}')
+    | from_json
+    | combine({'appPreferenceSettings': {'openAtLogin': false}}, recursive=True)
+    | to_json(separators=(',', ':'))
+}}

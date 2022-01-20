@@ -175,9 +175,9 @@
     state: present
 
 - name: Install Microsoft Teams.
-  become: true
   block:
     - name: Add the Microsoft Teams repository.
+      become: true
       ansible.builtin.apt_repository:
         # This needs to be exactly 'teams' to prevent Microsoft Teams
         # from adding this repository for the second time.
@@ -188,9 +188,17 @@
         state: present
 
     - name: Install Microsoft Teams.
+      become: true
       ansible.builtin.apt:
         name: teams
         state: present
+
+    - name: Disable auto-start of MS Teams.
+      ansible.builtin.template:
+        src: templates/ms-teams-desktop-config.json.j2
+        dest: "{{ item }}"
+      vars:
+        item: "{{ ansible_user_dir }}/.config/Microsoft/Microsoft Teams/desktop-config.json"
 
 - name: Install OnlyOffice.
   become: true

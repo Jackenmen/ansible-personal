@@ -8,7 +8,11 @@ repos:
     rev: v4.1.0
     hooks:
       - id: end-of-file-fixer
-        exclude: '^templates/Cinnamenu@json\.json\.j2$'
+        exclude: |-
+          (?x)^
+          templates/Cinnamenu@json\.json\.j2
+          |templates/ms-teams-desktop-config\.json\.j2
+          $
       - id: mixed-line-ending
         args:
           - "--fix=lf"
