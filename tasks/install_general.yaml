@@ -266,6 +266,11 @@
 - name: Install Shutter.
   become: true
   block:
+    - name: Make Screenshots directory.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Pictures/Screenshots"
+        state: directory
+
     - name: Add Shutter stable repository
       ansible.builtin.apt_repository:
         repo: ppa:shutter/ppa
