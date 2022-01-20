@@ -134,11 +134,6 @@
     name: pre-commit
     state: present
 
-- name: Install python-launcher.
-  community.general.cargo:
-    name: python-launcher
-    state: present
-
 - name: Install redial.
   community.general.pipx:
     name: redial
