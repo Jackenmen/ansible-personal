@@ -41,6 +41,19 @@
           - sublime-merge
         state: present
 
+    - name: Create Installed Packages folder in Sublime Text's config directory.
+      ansible.builtin.file:
+        path: "{{ installed_packages_path }}"
+        state: directory
+
+    - name: Install Package Control.
+      ansible.builtin.get_url:
+        url: https://packagecontrol.io/Package%20Control.sublime-package
+        dest: "{{ installed_packages_path }}/Package Control.sublime-package"
+  vars:
+    installed_packages_path: |-
+      {{ ansible_user_dir }}/.config/sublime-text/Installed Packages
+
 - name: Install Docker and docker-compose.
   become: true
   ansible.builtin.apt:
