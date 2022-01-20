@@ -10,7 +10,6 @@ repos:
       - id: end-of-file-fixer
         exclude: '^templates/Cinnamenu@json\.json\.j2$'
       - id: mixed-line-ending
-        exclude: '^templates/Cinnamenu@json\.json\.j2$'
         args:
           - "--fix=lf"
 
