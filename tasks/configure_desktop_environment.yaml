@@ -120,6 +120,8 @@
         state: present
 
 - name: Use Cinnamenu applet instead of the default menu applet.
+  tags:
+    - no-ci  # can't read a value in CI as it is not already set
   block:
     - name: Download and install Cinnamenu.
       ansible.builtin.unarchive:
