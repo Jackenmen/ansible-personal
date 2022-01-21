@@ -9,7 +9,7 @@ git pull --ff-only || exit 1
 ansible-galaxy install -r ./requirements.yaml
 
 # Run playbook.
-systemd-inhibit ansible-playbook --ask-become-pass ./desktop.yaml
+gnome-session-inhibit ansible-playbook --ask-become-pass ./desktop.yaml
 
 # Notify after finishing.
 notify-send --icon=terminal --urgency=critical 'Machine provisioned!' 'Ansible finished running.'
