@@ -13,9 +13,17 @@
     and 'imported: 0' not in gpg_public_key_import.stderr
 
 - name: Ultimately trust my GPG key.
-  ansible.builtin.command:
-    stdin: "{{ my_key }}"
-    cmd: gpg --import-ownertrust
-  when: my_key not in lookup('pipe', 'gpg --export-ownertrust 2>/dev/null || :')
-  vars:
-    my_key: "00354D7E9DD49ED6070F507695A9D6BCDE5C1283:6:"
+  block:
+    - name: Import ownertrust.
+      ansible.builtin.command:
+        stdin: "{{ my_key }}"
+        cmd: gpg --import-ownertrust
+      when: my_key not in lookup('pipe', 'gpg --export-ownertrust 2>/dev/null || :')
+      register: import_ownertrust
+      vars:
+        my_key: "00354D7E9DD49ED6070F507695A9D6BCDE5C1283:6:"
+
+    - name: Update trustdb.
+      ansible.builtin.command:
+        cmd: gpg --check-trustdb
+      when: import_ownertrust is not skipped
