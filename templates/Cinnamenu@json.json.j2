@@ -1,6 +1,6 @@
 {%
     set current_config = (
-        lookup('file', item, errors='ignore') or '{"recent-apps": {"value": []}}'
+        (lookup('file', item, errors='ignore') or '{"recent-apps": {"value": []}}')
         | from_json
     )
 %}
