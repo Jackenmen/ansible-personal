@@ -26,15 +26,17 @@
         content: |
           [Unit]
           Description=Turn off the speakers and monitors on shutdown.
-          Before=poweroff.target suspend.target
+          Conflicts=reboot.target
+          After=network-online.target
 
           [Service]
           Type=oneshot
-          ExecStart=/usr/bin/curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_off
+          ExecStart=/bin/true
+          ExecStop=/usr/bin/curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_off
           RemainAfterExit=yes
 
           [Install]
-          WantedBy=poweroff.target suspend.target
+          WantedBy=multi-user.target
 
     - name: Enable the new services.
       ansible.builtin.systemd:
