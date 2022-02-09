@@ -21,22 +21,39 @@
           WantedBy=multi-user.target
 
     - name: Add turn_displays_and_speakers_off service file.
-      ansible.builtin.copy:
-        dest: /etc/systemd/system/turn_displays_and_speakers_off.service
-        content: |
-          [Unit]
-          Description=Turn off the speakers and monitors on shutdown.
-          Conflicts=reboot.target
-          After=network-online.target
+      block:
+        - name: Create /opt/scripts directory.
+          ansible.builtin.file:
+            path: /opt/scripts
+            state: directory
 
-          [Service]
-          Type=oneshot
-          ExecStart=/bin/true
-          ExecStop=/usr/bin/curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_off
-          RemainAfterExit=yes
+        - name: Create computer_turn_off.sh script.
+          ansible.builtin.copy:
+            dest: /opt/scripts/computer_turn_off.sh
+            content: |
+              #!/usr/bin/env bash
 
-          [Install]
-          WantedBy=multi-user.target
+              if ! systemctl list-jobs | grep -q -e "reboot.target.*start"; then
+                  echo 'Not rebooting'
+                  curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_off
+              fi
+
+        - name: Create service file.
+          ansible.builtin.copy:
+            dest: /etc/systemd/system/turn_displays_and_speakers_off.service
+            content: |
+              [Unit]
+              Description=Turn off the speakers and monitors on shutdown.
+              After=network-online.target
+
+              [Service]
+              Type=oneshot
+              ExecStart=/bin/true
+              ExecStop=/bin/bash /opt/scripts/computer_turn_off.sh
+              RemainAfterExit=yes
+
+              [Install]
+              WantedBy=multi-user.target
 
     - name: Enable the new services.
       ansible.builtin.systemd:
