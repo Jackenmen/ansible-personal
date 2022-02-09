@@ -61,8 +61,8 @@ jobs:
         run: |
           idempotence=$(mktemp)
           /usr/bin/ansible-playbook --skip-tags no-ci desktop.yaml -v | tee -a ${idempotence}
-          grep -E '^localhost +:' ${idempotence} | tail -n 1 \
-            | grep -q 'changed=0.*failed=0' \
+          sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" ${idempotence} \
+            | grep -E '^localhost +:' | tail -n 1 | grep -q 'changed=0.*failed=0' \
               && (echo 'Idempotence test: pass' && exit 0) \
               || (echo 'Idempotence test: fail' && exit 1)
         env:
