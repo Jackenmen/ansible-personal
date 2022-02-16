@@ -1,4 +1,21 @@
 ---
+- name: Configure GRUB to only include the current system and skip menu.
+  become: true
+  block:
+    - name: Create configuration file.
+      register: grub_my_custom_config
+      ansible.builtin.copy:
+        dest: /etc/default/grub.d/90_my_custom_config.cfg
+        content: |
+          GRUB_TIMEOUT=0
+          GRUB_TIMEOUT_STYLE=hidden
+          GRUB_DISABLE_OS_PROBER=true
+
+    - name: Generate a grub config file (update-grub).
+      ansible.builtin.command:
+        cmd: update-grub
+      when: grub_my_custom_config is changed
+
 - name: Disable hibernation.
   become: true
   block:
