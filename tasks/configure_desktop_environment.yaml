@@ -16,6 +16,25 @@
         cmd: update-grub
       when: grub_my_custom_config is changed
 
+- name: Enable scroll on middle mouse button hold.
+  become: true
+  block:
+    - name: Create /etc/X11/xorg.conf.d directory.
+      ansible.builtin.file:
+        path: /etc/X11/xorg.conf.d
+        state: directory
+
+    - name: Create configuration file.
+      ansible.builtin.copy:
+        dest: /etc/X11/xorg.conf.d/90-enable-button-scroll-method.conf
+        content: |
+          Section "InputClass"
+            Identifier   "My Current Mouse"
+            MatchProduct "Glorious Model D"
+            Driver       "libinput"
+            Option       "ScrollMethod"    "button"
+          EndSection
+
 - name: Disable hibernation.
   become: true
   block:
