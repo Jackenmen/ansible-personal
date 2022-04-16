@@ -37,6 +37,11 @@
         src: "{{ ansible_user_dir }}/.local/kitty.app/bin/kitty"
         state: link
 
+    - name: Create ~/.local/share/applications directory.
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.local/share/applications"
+        state: directory
+
     - name: Create desktop shortcut.
       ansible.builtin.template:
         src: templates/kitty.desktop.j2

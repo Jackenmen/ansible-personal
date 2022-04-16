@@ -20,7 +20,6 @@ jobs:
 
       - name: Make necessary changes to CI environment.
         run: |
-          mkdir -p ~/.local/share/applications
           mkdir -p ~/.local/share/cinnamon/applets
           mkdir -p ~/.local/share/cinnamon/extensions
           mkdir -p ~/.cinnamon/configs/calendar@cinnamon.org
