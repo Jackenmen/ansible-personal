@@ -3,7 +3,7 @@
 sudo apt install -y git
 
 # Clone the repository to a dedicated location in home directory.
-git clone https://github.com/jack1142/ansible-personal ~/ansible-personal
+git clone https://github.com/jack1142/ansible-personal ~/ansible-personal -b kde_test
 chmod o-w ~/ansible-personal
 cd ~/ansible-personal
 
