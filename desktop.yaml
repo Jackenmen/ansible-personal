@@ -33,6 +33,7 @@
     - import_tasks: tasks/add_repository_keys.yaml
 
     - import_tasks: tasks/install_appimaged.yaml
+    - import_tasks: tasks/install_flatpak.yaml
     - import_tasks: tasks/install_language_runtimes.yaml
 
     - import_tasks: tasks/install_fonts.yaml

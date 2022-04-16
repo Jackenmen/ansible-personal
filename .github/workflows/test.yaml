@@ -27,7 +27,6 @@ jobs:
           mkdir -p ~/.cinnamon/configs/grouped-window-list@cinnamon.org
           mkdir -p ~/.cinnamon/configs/opacify@anish.org
           sudo apt install dbus dconf-cli flatpak python3-psutil runc
-          sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
           sudo dpkg --add-architecture i386
           sudo apt-add-repository -y multiverse
           sudo apt-add-repository -y restricted

@@ -1,0 +1,19 @@
+---
+- name: Install snapd.
+  become: true
+  block:
+    - name: Install Flatpak.
+      ansible.builtin.apt:
+        name: flatpak
+        state: present
+
+    - name: Install the Discover Flatpak backend.
+      ansible.builtin.apt:
+        name: plasma-discover-backend-flatpak
+        state: present
+
+    - name: Add the Flathub repository.
+      community.general.flatpak_remote:
+        name: flathub
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+        state: present
