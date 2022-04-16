@@ -1,1 +1,7 @@
 ---
+- name: Install Checksum Blister for Dolphin.
+  become: true
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/KVAnton-WEB/Checksum-Blister/master/checksum_blister
+    dest: /usr/local/bin/checksum_blister
+    mode: +x
