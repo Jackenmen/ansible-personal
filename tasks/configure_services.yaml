@@ -62,12 +62,3 @@
       loop:
         - turn_displays_and_speakers_on
         - turn_displays_and_speakers_off
-
-- name: Enable Redshift service.
-  tags:
-    - no-ci  # Redshift is pre-installed on Mint but not in CI
-  ansible.builtin.systemd:
-    name: redshift-gtk
-    scope: user
-    enabled: true
-    state: started

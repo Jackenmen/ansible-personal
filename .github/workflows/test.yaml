@@ -20,12 +20,7 @@ jobs:
 
       - name: Make necessary changes to CI environment.
         run: |
-          mkdir -p ~/.local/share/cinnamon/applets
-          mkdir -p ~/.local/share/cinnamon/extensions
-          mkdir -p ~/.cinnamon/configs/calendar@cinnamon.org
-          mkdir -p ~/.cinnamon/configs/grouped-window-list@cinnamon.org
-          mkdir -p ~/.cinnamon/configs/opacify@anish.org
-          sudo apt install dbus dconf-cli flatpak python3-psutil runc
+          sudo apt install dbus dconf-cli python3-psutil runc
           sudo dpkg --add-architecture i386
           sudo apt-add-repository -y multiverse
           sudo apt-add-repository -y restricted

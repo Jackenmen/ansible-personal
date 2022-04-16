@@ -24,6 +24,7 @@
           - build-essential
           - curl
           - git
+          - python3-psutil  # required by ansible's dconf module
         state: present
 
     # snap is required to install chezmoi
