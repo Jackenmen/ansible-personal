@@ -52,21 +52,3 @@
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /bin/zsh
-
-# in case I ever need/want to use Gnome Terminal instead of kitty...
-- name: Change font used by Gnome Terminal.
-  block:
-    - name: Enable custom font.
-      community.general.dconf:
-        key: "{{ profile_path }}/use-system-font"
-        value: "false"
-        state: present
-
-    - name: Choose font.
-      community.general.dconf:
-        key: "{{ profile_path }}/font"
-        value: "'SauceCodePro Nerd Font Mono 11'"
-        state: present
-  vars:
-    profile_path: |-
-      /org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9

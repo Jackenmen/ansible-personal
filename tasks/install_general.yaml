@@ -5,12 +5,6 @@
     name: audacity
     state: present
 
-- name: Install Dconf Editor.
-  become: true
-  ansible.builtin.apt:
-    name: dconf-editor
-    state: present
-
 - name: Install Discord.
   become: true
   when: "'discord' not in ansible_facts.packages"
