@@ -47,12 +47,6 @@
         src: templates/kitty.desktop.j2
         dest: "{{ ansible_user_dir }}/.local/share/applications/kitty.desktop"
 
-    - name: Set kitty as default terminal.
-      community.general.dconf:
-        key: /org/cinnamon/desktop/applications/terminal/exec
-        value: "'kitty --single-instance'"
-        state: present
-
 - name: Change current user's login shell to zsh.
   become: true
   ansible.builtin.user:
