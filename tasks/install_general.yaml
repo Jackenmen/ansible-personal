@@ -269,29 +269,10 @@
         path: "{{ ansible_user_dir }}/Pictures/Screenshots"
         state: directory
 
-    - name: Add Shutter stable repository
-      become: true
-      ansible.builtin.apt_repository:
-        repo: ppa:shutter/ppa
-        codename: "{{ ubuntu_codename }}"
-        state: present
-
     - name: Install Shutter.
       become: true
       ansible.builtin.apt:
         name: shutter
-        state: present
-
-    - name: Install gnome-web-photo for full website screenshots capture support.
-      become: true
-      ansible.builtin.apt:
-        name: gnome-web-photo
-        state: present
-
-    - name: Install gir1.2-appindicator3-0.1 for tray icon support.
-      become: true
-      ansible.builtin.apt:
-        name: gir1.2-appindicator3-0.1
         state: present
 
 - name: Install Spotify.
