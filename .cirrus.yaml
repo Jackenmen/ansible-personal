@@ -1,20 +1,15 @@
 env:
   ANSIBLE_FORCE_COLOR: "1"
+  CIRRUS_WORKING_DIR: /home/ubuntu
+  CIRRUS_SHELL: sudo -Hu ubuntu bash
 
 test_task:
   # safer timeout value
-  timeout_in: 90m
+  timeout_in: 120m
 
   compute_engine_instance:
     image_project: ubuntu-os-cloud
-    image: family/ubuntu-2004-lts
-
-  ci_env_changes_script: |-
-    sudo apt install -y dbus dconf-cli python3-psutil runc
-    sudo dpkg --add-architecture i386
-    sudo apt-add-repository -y multiverse
-    sudo apt-add-repository -y restricted
-    sudo apt update
+    image: family/ubuntu-2204-lts
 
   install_ansible_script: |-
     sudo add-apt-repository -y ppa:ansible/ansible
