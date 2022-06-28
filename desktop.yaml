@@ -16,6 +16,12 @@
       ansible.builtin.package_facts:
         manager: auto
 
+    - name: Run apt update && apt upgrade
+      become: true
+      ansible.builtin.apt:
+        update: true
+        upgrade: safe
+
     - name: Ensure basic utilities are present.
       become: true
       ansible.builtin.apt:
