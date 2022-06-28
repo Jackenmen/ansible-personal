@@ -19,7 +19,7 @@
     - name: Run apt update && apt upgrade
       become: true
       ansible.builtin.apt:
-        update: true
+        update_cache: true
         upgrade: safe
 
     - name: Ensure basic utilities are present.
