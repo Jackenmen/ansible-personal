@@ -25,9 +25,9 @@
     state: present
 
 - name: Install Sublime Text and Sublime Merge.
-  become: true
   block:
     - name: Add the Sublime HQ repository.
+      become: true
       ansible.builtin.apt_repository:
         repo: >-
           deb [signed-by=/usr/share/keyrings/sublimehq-archive-keyring.gpg]
@@ -35,6 +35,7 @@
         state: present
 
     - name: Install Sublime Text and Merge.
+      become: true
       ansible.builtin.apt:
         name:
           - sublime-text
