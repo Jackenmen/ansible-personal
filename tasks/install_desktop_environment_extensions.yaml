@@ -1,4 +1,16 @@
 ---
+- name: Install ARandR.
+  become: true
+  ansible.builtin.apt:
+    name: arandr
+    state: present
+
+- name: Install autorandr.
+  become: true
+  ansible.builtin.apt:
+    name: autorandr
+    state: present
+
 - name: Install Checksum Blister for Dolphin.
   become: true
   ansible.builtin.get_url:
