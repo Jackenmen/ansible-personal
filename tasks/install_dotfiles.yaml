@@ -1,4 +1,10 @@
 ---
+- name: Install python3-lxml.
+  become: true
+  ansible.builtin.apt:
+    name: python3-lxml
+    state: present
+
 - name: Install chezmoi.
   become: true
   community.general.snap:
