@@ -49,6 +49,16 @@
 
 - name: Change current user's login shell to zsh.
   become: true
-  ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
-    shell: /bin/zsh
+  block:
+    - name: Update /etc/zsh/zprofile to source /etc/profile.
+      ansible.builtin.blockinfile:
+        path: /etc/zsh/zprofile
+        block: |
+          emulate sh
+          source /etc/profile
+          emulate zsh
+        mode: '0644'
+    - name: Update current user's login shell.
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/zsh
