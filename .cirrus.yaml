@@ -1,7 +1,5 @@
 env:
   ANSIBLE_FORCE_COLOR: "1"
-  CIRRUS_WORKING_DIR: /home/ubuntu
-  CIRRUS_SHELL: sudo -Hu ubuntu bash
 
 test_task:
   # safer timeout value
@@ -15,26 +13,31 @@ test_task:
     sudo add-apt-repository -y ppa:ansible/ansible
     sudo apt install -y ansible
 
+  change_owner_of_current_directory: |-
+    chmod 755 .
+    chown -R ubuntu:ubuntu .
+
   install_ansible_roles_script: |-
-    ansible-galaxy install -r requirements.yaml
+    sudo -Hu ubuntu ansible-galaxy install -r requirements.yaml
 
   print_ansible_debug_information_script: |-
-    ansible --version
-    ansible-galaxy collection list
-    ansible-config dump --only-changed
+    sudo -Hu ubuntu ansible --version
+    sudo -Hu ubuntu ansible-galaxy collection list
+    sudo -Hu ubuntu ansible-config dump --only-changed
 
   test_playbook_syntax_script: |-
-    ansible-playbook desktop.yaml --syntax-check
+    sudo -Hu ubuntu ansible-playbook desktop.yaml --syntax-check
 
   test_playbook_script: |-
-    ansible-playbook --skip-tags no-ci -v desktop.yaml
+    sudo -Hu ubuntu ansible-playbook --skip-tags no-ci -v desktop.yaml
 
   # Idempotence check taken from:
   # https://github.com/geerlingguy/mac-dev-playbook/blob/c42f8822dd7f82ad6ba3c95ca3a136279926c990/.github/workflows/ci.yml#L71-L77
   idempotence_check_script: |-
-    idempotence=$(mktemp)
-    ansible-playbook --skip-tags no-ci desktop.yaml -v | tee -a ${idempotence}
-    sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" ${idempotence} \
+    idempotence=$(sudo -Hu ubuntu mktemp)
+    sudo -Hu ubuntu ansible-playbook --skip-tags no-ci desktop.yaml -v \
+      | sudo -Hu ubuntu tee -a ${idempotence}
+    sudo -Hu ubuntu sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g" ${idempotence} \
       | grep -E '^localhost +:' | tail -n 1 | grep -q 'changed=0.*failed=0' \
         && (echo 'Idempotence test: pass' && exit 0) \
         || (echo 'Idempotence test: fail' && exit 1)
