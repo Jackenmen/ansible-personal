@@ -71,6 +71,33 @@
         name: google-chrome-stable
         state: present
 
+- name: Install Google Chrome Remote Desktop.
+  become: true
+  block:
+    - name: Prevent Google Chrome Remote Desktop package from adding its own GPG key.
+      ansible.builtin.copy:
+        dest: /etc/default/chrome-remote-desktop
+        content: |
+          echo -n '/etc/default/chrome-remote-desktop has prevented'
+          echo -n ' Google Chrome Remote Desktop package'
+          echo    ' from adding gpg key to /etc/apt/trusted.gpg.d/'
+          exit 0
+
+    - name: Add the Google Chrome Remote Desktop repository.
+      ansible.builtin.apt_repository:
+        # This needs to be exactly 'chrome-remote-desktop' to prevent
+        # Google Chrome Remote Desktop from adding this repository for the second time.
+        filename: chrome-remote-desktop
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/google-archive-keyring.gpg]
+          http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
+        state: present
+
+    - name: Install Google Chrome Remote Desktop.
+      ansible.builtin.apt:
+        name: chrome-remote-desktop
+        state: present
+
 - name: Install Inkscape.
   become: true
   block:
