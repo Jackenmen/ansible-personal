@@ -8,6 +8,7 @@ test_task:
   compute_engine_instance:
     image_project: ubuntu-os-cloud
     image: family/ubuntu-2204-lts
+    disk: 50
 
   install_ansible_script: |-
     sudo add-apt-repository -y ppa:ansible/ansible
