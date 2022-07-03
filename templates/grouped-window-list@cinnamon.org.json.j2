@@ -1,6 +1,0 @@
-{{
-    lookup('file', item)
-    | from_json
-    | combine({'pinned-apps': {'value': pinned_apps}}, recursive=True)
-    | to_nice_json(sort_keys=False)
-}}

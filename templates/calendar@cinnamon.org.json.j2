@@ -1,7 +1,0 @@
-{{
-    lookup('file', item)
-    | from_json
-    | combine({'use-custom-format': {'value': true}}, recursive=True)
-    | combine({'custom-format': {'value': '%H:%M:%S%n%Y-%m-%d'}}, recursive=True)
-    | to_nice_json(sort_keys=False)
-}}
