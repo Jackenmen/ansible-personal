@@ -30,6 +30,7 @@
           - build-essential
           - curl
           - git
+          - unzip
         state: present
 
     # snap is required to install chezmoi
