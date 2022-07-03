@@ -300,10 +300,12 @@
     deb: https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
     state: present
 
-- name: Install TeX Live.
+- name: Install TeX Studio.
   become: true
   ansible.builtin.apt:
-    name: texlive-full
+    name:
+      - texlive
+      - texstudio
     state: present
 
 - name: Install Unified Remote Server (urserver).
