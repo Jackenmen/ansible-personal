@@ -9,11 +9,6 @@
         codename: "{{ ubuntu_codename }}"
         state: present
 
-    - name: Install pip.
-      ansible.builtin.apt:
-        name: python3-pip
-        state: present
-
     - name: Install Python 3.8.
       ansible.builtin.apt:
         name:
@@ -45,10 +40,48 @@
     state: present
 
 - name: Install pipx.
-  ansible.builtin.pip:
-    name: pipx
-    extra_args: --user
-    state: present
+  block:
+    - name: Check if pipx is installed.
+      ansible.builtin.stat:
+        path: "{{ ansible_user_dir }}/.local/bin/pipx"
+      register: pipx_installed
+
+    - name: Install pipx.
+      when: not pipx_installed.stat.exists
+      block:
+        - name: Create temporary directory for venv.
+          ansible.builtin.tempfile:
+            state: directory
+          register: tempvenv
+
+        - name: Create a temporary venv.
+          ansible.builtin.command:
+            cmd: python3 -m venv {{ tempvenv.path | quote }}
+
+        - name: Install pipx in temporary venv.
+          ansible.builtin.command:
+            argv:
+              - "{{ tempvenv.path }}/bin/python"
+              - -m
+              - pip
+              - install
+              - pipx
+
+        - name: Install pipx with pipx.
+          ansible.builtin.command:
+            argv:
+              - "{{ tempvenv.path }}/bin/pipx"
+              - install
+              - pipx
+              - --python
+              - python3
+              - --force
+      always:
+        - name: Remove the temporary venv.
+          ansible.builtin.file:
+            path: "{{ tempvenv.path }}"
+            state: absent
+          when: tempvenv.path is defined
 
 # Java
 - name: Install Java OpenJDK 11.
