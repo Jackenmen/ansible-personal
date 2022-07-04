@@ -3,6 +3,10 @@
   hosts: localhost
   connection: local
 
+  module_defaults:
+    community.general.pipx:
+      executable: ~/.local/bin/pipx
+
   vars:
     ubuntu_codename: >-
       {{
