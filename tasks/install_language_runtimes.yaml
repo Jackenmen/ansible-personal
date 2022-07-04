@@ -75,7 +75,7 @@
               - pipx
               - --python
               - python3
-              - --force
+              - --include-deps
       always:
         - name: Remove the temporary venv.
           ansible.builtin.file:
