@@ -20,6 +20,7 @@ In future, to provision the machine, run:
 
 ## What needs to be done manually after provisioning?
 
+- Switch to Breeze Dark theme
 - Set license key for Sublime Text.
 - Copy over `~/.gnupg/pubring.kbx` and `~/.gnupg/private-keys-v1.d/`.
 - Copy over `~/.config/redial/sessions`.
