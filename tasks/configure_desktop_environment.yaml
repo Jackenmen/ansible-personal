@@ -93,7 +93,7 @@
         content: |
           [Desktop Entry]
           Name=Reboot to Windows
-          Exec=sudo reboot-windows
+          Exec=kdialog --title 'Reboot to Windows' --yesno 'Are you sure that you want to reboot to Windows?' && sudo reboot-windows
           Icon=system-run
           Type=Application
           StartupNotify=true
