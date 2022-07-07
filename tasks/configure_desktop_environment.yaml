@@ -59,3 +59,41 @@
   loop:
     - x-www-browser
     - gnome-www-browser
+
+- name: Add reboot-windows script and allow running it without password.
+  block:
+    - name: Create /usr/local/sbin/reboot-windows.
+      become: true
+      ansible.builtin.copy:
+        dest: /usr/local/sbin/reboot-windows
+        content: |
+          #!/bin/sh -e
+
+          bootnum=$(efibootmgr | sed -nr 's/Boot([0-9A-F]{4})\* Windows Boot Manager/\1/p' | head -n 1)
+
+          efibootmgr -n "$bootnum"
+          reboot
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Allow running reboot-windows without password in sudoers.d.
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/00-allow-reboot-windows
+        content: |
+          ubuntu ALL = (ALL) NOPASSWD: /usr/local/sbin/reboot-windows
+        mode: '0440'
+        owner: root
+        group: root
+
+    - name: Create Reboot to Windows shortcut on desktop.
+      ansible.builtin.copy:
+        dest: "{{ ansible_user_dir }}/Desktop/RebootToWindows.desktop"
+        content: |
+          [Desktop Entry]
+          Name=Reboot to Windows
+          Exec=sudo reboot-windows
+          Icon=system-run
+          Type=Application
+          StartupNotify=true
