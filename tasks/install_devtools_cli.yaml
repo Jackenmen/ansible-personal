@@ -12,6 +12,18 @@
         name: pinentry
         path: /usr/bin/pinentry-qt
 
+- name: Install autotrash.
+  block:
+    - name: Install autotrash.
+      community.general.pipx:
+        name: autotrash
+        state: present
+
+    - name: Install autotrash user service.
+      ansible.builtin.command:
+        cmd: autotrash --install -d 7 --trash-mounts
+        creates: "{{ ansible_user_dir }}/.config/systemd/user/autotrash.service"
+
 - name: Install bat.
   community.general.cargo:
     name: bat
