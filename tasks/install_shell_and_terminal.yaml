@@ -15,6 +15,12 @@
     name: sheldon
     state: present
 
+- name: Install direnv.
+  become: true
+  ansible.builtin.apt:
+    name: direnv
+    state: present
+
 - name: Install fzf.
   become: true
   ansible.builtin.apt:
