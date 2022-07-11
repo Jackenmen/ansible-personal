@@ -3,9 +3,13 @@
   hosts: localhost
   connection: local
 
+  environment:
+    PIPX_BIN_DIR: /usr/local/bin
+    PIPX_HOME: /opt/pipx
+
   module_defaults:
     community.general.pipx:
-      executable: ~/.local/bin/pipx
+      executable: pipx
 
   vars:
     ubuntu_codename: >-

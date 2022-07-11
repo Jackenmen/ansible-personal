@@ -15,6 +15,7 @@
 - name: Install autotrash.
   block:
     - name: Install autotrash.
+      become: true
       community.general.pipx:
         name: autotrash
         state: present
@@ -22,7 +23,7 @@
     - name: Install autotrash user service.
       ansible.builtin.command:
         argv:
-          - "{{ ansible_user_dir }}/.local/bin/autotrash"
+          - autotrash
           - --install
           - -d
           - 7
@@ -59,6 +60,7 @@
     state: present
 
 - name: Install git-delete-merged-branches.
+  become: true
   community.general.pipx:
     name: git-delete-merged-branches
     state: present
@@ -131,6 +133,7 @@
     state: present
 
 - name: Install mitmproxy.
+  become: true
   community.general.pipx:
     name: mitmproxy
     state: present
@@ -148,11 +151,13 @@
     state: present
 
 - name: Install pre-commit.
+  become: true
   community.general.pipx:
     name: pre-commit
     state: present
 
 - name: Install redial.
+  become: true
   community.general.pipx:
     name: redial
     source: git+https://github.com/jack1142/redial@kitty
@@ -176,11 +181,13 @@
     state: present
 
 - name: Install trash-cli.
+  become: true
   community.general.pipx:
     name: trash-cli
     state: present
 
 - name: Install virtualenv.
+  become: true
   community.general.pipx:
     name: virtualenv
     state: present

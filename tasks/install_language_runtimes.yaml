@@ -40,48 +40,42 @@
     state: present
 
 - name: Install pipx.
+  become: true
   block:
-    - name: Check if pipx is installed.
-      ansible.builtin.stat:
-        path: "{{ ansible_user_dir }}/.local/bin/pipx"
-      register: pipx_installed
-
     - name: Install pipx.
-      when: not pipx_installed.stat.exists
-      block:
-        - name: Create temporary directory for venv.
-          ansible.builtin.tempfile:
-            state: directory
-          register: tempvenv
+      ansible.builtin.apt:
+        name: pipx
+        state: present
 
-        - name: Create a temporary venv.
-          ansible.builtin.command:
-            cmd: python3 -m venv {{ tempvenv.path | quote }}
+    - name: Create PIPX_HOME directory.
+      ansible.builtin.file:
+        path: "{{ ansible_env.PIPX_HOME }}"
+        state: directory
+        mode: '0755'
 
-        - name: Install pipx in temporary venv.
-          ansible.builtin.command:
-            argv:
-              - "{{ tempvenv.path }}/bin/python"
-              - -m
-              - pip
-              - install
-              - pipx
+    - name: Create PIPX_HOME/logs directory.
+      ansible.builtin.file:
+        path: "{{ ansible_env.PIPX_HOME }}/logs"
+        state: directory
+        # This is not ideal but currently the only way to
+        # keep `pipx list` work without `sudo`.
+        #
+        # https://github.com/pypa/pipx/issues/754#issuecomment-1181082995
+        mode: '0777'
 
-        - name: Install pipx with pipx.
-          ansible.builtin.command:
-            argv:
-              - "{{ tempvenv.path }}/bin/pipx"
-              - install
-              - pipx
-              - --python
-              - python3
-              - --include-deps
-      always:
-        - name: Remove the temporary venv.
-          ansible.builtin.file:
-            path: "{{ tempvenv.path }}"
-            state: absent
-          when: tempvenv.path is defined
+    - name: Set PIPX_BIN_DIR global env var.
+      ansible.builtin.lineinfile:
+        path: /etc/environment
+        regexp: '^PIPX_BIN_DIR='
+        line: "PIPX_BIN_DIR={{ ansible_env.PIPX_BIN_DIR }}"
+        state: present
+
+    - name: Set PIPX_HOME global env var.
+      ansible.builtin.lineinfile:
+        path: /etc/environment
+        regexp: '^PIPX_HOME='
+        line: "PIPX_HOME={{ ansible_env.PIPX_HOME }}"
+        state: present
 
 # Java
 - name: Install Java OpenJDK 11.
