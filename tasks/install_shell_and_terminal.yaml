@@ -64,6 +64,7 @@
           source /etc/profile
           emulate zsh
         mode: '0644'
+
     - name: Update current user's login shell.
       ansible.builtin.user:
         name: "{{ ansible_user_id }}"

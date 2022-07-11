@@ -38,6 +38,7 @@
       ansible.builtin.file:
         path: /usr/local/share/fonts/Inconsolata
         state: absent
+
     - name: Re-raise the error.
       fail:
         msg: "{{ ansible_failed_result }}"
