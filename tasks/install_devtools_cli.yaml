@@ -21,7 +21,12 @@
 
     - name: Install autotrash user service.
       ansible.builtin.command:
-        cmd: autotrash --install -d 7 --trash-mounts
+        argv:
+          - "{{ ansible_user_dir }}/.local/bin/autotrash"
+          - --install
+          - -d
+          - 7
+          - --trash-mounts
         creates: "{{ ansible_user_dir }}/.config/systemd/user/autotrash.service"
 
 - name: Install bat.
