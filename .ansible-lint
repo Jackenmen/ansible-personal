@@ -3,3 +3,5 @@ exclude_paths:
   - .github/
   - .cirrus.yaml
   - .pre-commit-config.yaml
+skip_list:
+  - yaml[line-length]
