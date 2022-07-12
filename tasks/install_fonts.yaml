@@ -67,6 +67,7 @@
       ansible.builtin.file:
         path: /usr/local/share/fonts/SourceCodePro
         state: absent
+
     - name: Re-raise the error.
       fail:
         msg: "{{ ansible_failed_result }}"
@@ -105,6 +106,7 @@
       ansible.builtin.file:
         path: /usr/local/share/fonts/SauceCodePro
         state: absent
+
     - name: Re-raise the error.
       fail:
         msg: "{{ ansible_failed_result }}"
