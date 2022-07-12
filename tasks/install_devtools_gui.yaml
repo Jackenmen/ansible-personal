@@ -46,11 +46,13 @@
       ansible.builtin.file:
         path: "{{ installed_packages_path }}"
         state: directory
+        mode: '0700'
 
     - name: Install Package Control.
       ansible.builtin.get_url:
         url: https://packagecontrol.io/Package%20Control.sublime-package
         dest: "{{ installed_packages_path }}/Package Control.sublime-package"
+        mode: '0664'
   vars:
     installed_packages_path: |-
       {{ ansible_user_dir }}/.config/sublime-text/Installed Packages

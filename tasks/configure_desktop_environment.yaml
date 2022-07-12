@@ -10,6 +10,7 @@
           GRUB_TIMEOUT=0
           GRUB_TIMEOUT_STYLE=hidden
           GRUB_DISABLE_OS_PROBER=true
+        mode: '0644'
 
     - name: Generate a grub config file (update-grub).
       ansible.builtin.command:
@@ -23,6 +24,7 @@
       ansible.builtin.file:
         path: /etc/X11/xorg.conf.d
         state: directory
+        mode: '0755'
 
     - name: Create configuration file.
       ansible.builtin.copy:
@@ -34,6 +36,7 @@
             Driver       "libinput"
             Option       "ScrollMethod"    "button"
           EndSection
+        mode: '0644'
 
 - name: Disable hibernation.
   become: true
@@ -42,6 +45,7 @@
       ansible.builtin.file:
         path: /etc/systemd/sleep.conf.d
         state: directory
+        mode: '0755'
 
     - name: Create nohibernation.conf file.
       ansible.builtin.copy:
@@ -51,6 +55,7 @@
           AllowHibernation=no
           AllowSuspendThenHibernate=no
           AllowHybridSleep=no
+        mode: '0644'
 
 - name: Set default browser to Google Chrome.
   community.general.alternatives:
@@ -97,3 +102,4 @@
           Icon=system-run
           Type=Application
           StartupNotify=true
+        mode: '0755'

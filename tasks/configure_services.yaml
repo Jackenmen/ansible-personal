@@ -19,6 +19,7 @@
 
           [Install]
           WantedBy=multi-user.target
+        mode: '0644'
 
     - name: Add turn_displays_and_speakers_off service file.
       block:
@@ -26,6 +27,7 @@
           ansible.builtin.file:
             path: /opt/scripts
             state: directory
+            mode: '0755'
 
         - name: Create computer_turn_off.sh script.
           ansible.builtin.copy:
@@ -37,6 +39,7 @@
                   echo 'Not rebooting'
                   curl -X POST http://192.168.0.3:8123/api/webhook/computer_turn_off
               fi
+            mode: '0644'
 
         - name: Create service file.
           ansible.builtin.copy:
@@ -54,6 +57,7 @@
 
               [Install]
               WantedBy=multi-user.target
+            mode: '0644'
 
     - name: Enable the new services.
       ansible.builtin.systemd:

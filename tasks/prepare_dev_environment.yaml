@@ -3,6 +3,7 @@
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/work"
     state: directory
+    mode: '0775'
 
 - name: Import my public GPG keys.
   ansible.builtin.command:

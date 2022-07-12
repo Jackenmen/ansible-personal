@@ -21,6 +21,7 @@
       ansible.builtin.file:
         path: /usr/local/share/fonts/Inconsolata
         state: directory
+        mode: '2755'
       register: inconsolata
 
     - name: Download and unzip Inconsolata font.
@@ -50,6 +51,7 @@
       ansible.builtin.file:
         path: /usr/local/share/fonts/SourceCodePro
         state: directory
+        mode: '2755'
       register: sourcecodepro
 
     - name: Download and unzip Source Code Pro font.
@@ -79,6 +81,7 @@
       ansible.builtin.file:
         path: /usr/local/share/fonts/SauceCodePro
         state: directory
+        mode: '2755'
       register: saucecodepro
 
     - name: Download and unzip SauceCodePro Nerd Font Mono font.

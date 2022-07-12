@@ -3,6 +3,7 @@
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/bin"
     state: directory
+    mode: '0775'
 
 - name: Install zsh.
   become: true
@@ -47,11 +48,13 @@
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/.local/share/applications"
         state: directory
+        mode: '0775'
 
     - name: Create desktop shortcut.
       ansible.builtin.template:
         src: templates/kitty.desktop.j2
         dest: "{{ ansible_user_dir }}/.local/share/applications/kitty.desktop"
+        mode: '0664'
 
 - name: Change current user's login shell to zsh.
   become: true
