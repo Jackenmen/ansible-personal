@@ -29,6 +29,8 @@
           - 7
           - --trash-mounts
         creates: "{{ ansible_user_dir }}/.config/systemd/user/autotrash.service"
+        register: autotrash_output
+        failed_when: autotrash_output.rc != 1
 
 - name: Install bat.
   community.general.cargo:
