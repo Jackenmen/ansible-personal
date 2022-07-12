@@ -40,7 +40,7 @@
         state: absent
 
     - name: Re-raise the error.
-      fail:
+      ansible.builtin.fail:
         msg: "{{ ansible_failed_result }}"
 
 - name: Install Source Code Pro font.
@@ -69,7 +69,7 @@
         state: absent
 
     - name: Re-raise the error.
-      fail:
+      ansible.builtin.fail:
         msg: "{{ ansible_failed_result }}"
 
 - name: Install SauceCodePro Nerd Font Mono font.
@@ -108,5 +108,5 @@
         state: absent
 
     - name: Re-raise the error.
-      fail:
+      ansible.builtin.fail:
         msg: "{{ ansible_failed_result }}"
