@@ -56,6 +56,11 @@
         dest: "{{ ansible_user_dir }}/.local/share/applications/kitty.desktop"
         mode: '0664'
 
+    - name: Install kitty-terminfo.
+      ansible.builtin.apt:
+        name: kitty-terminfo
+        state: present
+
 - name: Change current user's login shell to zsh.
   become: true
   block:
