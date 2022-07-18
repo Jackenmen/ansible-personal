@@ -81,10 +81,12 @@
           - libvirt
           - libvirt-qemu
 
-- name: Install VirtualBox.
+- name: Install VirtualBox and VirtualBox Extension Pack.
   become: true
   ansible.builtin.apt:
-    name: virtualbox
+    name:
+      - virtualbox
+      - virtualbox-ext-pack
     state: present
 
 - name: Install Vagrant.
