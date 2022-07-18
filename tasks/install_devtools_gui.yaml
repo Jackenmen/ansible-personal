@@ -83,11 +83,20 @@
 
 - name: Install VirtualBox and VirtualBox Extension Pack.
   become: true
-  ansible.builtin.apt:
-    name:
-      - virtualbox
-      - virtualbox-ext-pack
-    state: present
+  block:
+    - name: Accept VirtualBox Extension Pack PUEL.
+      ansible.builtin.debconf:
+        name: virtualbox-ext-pack
+        question: virtualbox-ext-pack/license
+        value: "true"
+        vtype: select
+
+    - name: Install VirtualBox and VirtualBox Extension Pack.
+      ansible.builtin.apt:
+        name:
+          - virtualbox
+          - virtualbox-ext-pack
+        state: present
 
 - name: Install Vagrant.
   become: true
