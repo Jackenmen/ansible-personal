@@ -119,6 +119,12 @@
     classic: true
     state: present
 
+- name: Install inotify-tools.
+  become: true
+  ansible.builtin.apt:
+    name: inotify-tools
+    state: present
+
 - name: Install little-helpers.
   ansible.builtin.git:  # noqa git-latest
     repo: https://github.com/jack1142/little-helpers
