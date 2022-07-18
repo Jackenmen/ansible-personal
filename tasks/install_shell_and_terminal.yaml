@@ -57,6 +57,7 @@
         mode: '0664'
 
     - name: Install kitty-terminfo.
+      become: true
       ansible.builtin.apt:
         name: kitty-terminfo
         state: present
