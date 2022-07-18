@@ -9,6 +9,14 @@
         codename: "{{ ubuntu_codename }}"
         state: present
 
+    - name: Install Python 3.7.
+      ansible.builtin.apt:
+        name:
+          - python3.7
+          - python3.7-dev
+          - python3.7-venv
+        state: present
+
     - name: Install Python 3.8.
       ansible.builtin.apt:
         name:
@@ -31,6 +39,14 @@
           - python3.10
           - python3.10-dev
           - python3.10-venv
+        state: present
+
+    - name: Install Python 3.11.
+      ansible.builtin.apt:
+        name:
+          - python3.11
+          - python3.11-dev
+          - python3.11-venv
         state: present
 
 - name: Ensure python is python3.
