@@ -57,14 +57,6 @@
     installed_packages_path: |-
       {{ ansible_user_dir }}/.config/sublime-text/Installed Packages
 
-- name: Install Docker and docker-compose.
-  become: true
-  ansible.builtin.apt:
-    name:
-      - docker.io
-      - docker-compose
-    state: present
-
 - name: Install QEMU.
   become: true
   block:

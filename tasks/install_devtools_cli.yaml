@@ -150,6 +150,16 @@
     name: pandoc
     state: present
 
+- name: Install Podman, docker-compose, and podman-docker wrapper.
+  become: true
+  ansible.builtin.apt:
+    name:
+      - podman
+      - docker-compose
+      # This is a wrapper script that acts like the original docker implementation.
+      - podman-docker
+    state: present
+
 - name: Install pre-commit.
   become: true
   community.general.pipx:
