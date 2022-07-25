@@ -254,20 +254,11 @@
       - playonlinux
       - winbind
 
-- name: Install Plex Media Player.
+- name: Install Plex.
   become: true
-  block:
-    - name: Add Plex Media Player flatpak repository.
-      community.general.flatpak_remote:
-        name: plex-media-player
-        flatpakrepo_url: https://flatpak.knapsu.eu/plex-media-player.flatpakrepo
-        state: present
-
-    - name: Install Plex Media Player.
-      community.general.flatpak:
-        remote: plex-media-player
-        name: tv.plex.PlexMediaPlayer
-        state: present
+  community.general.snap:
+    name: plex-desktop
+    state: present
 
 - name: Install PulseAudio Volume Control (pavucontrol).
   become: true
