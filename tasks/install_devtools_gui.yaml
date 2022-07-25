@@ -103,8 +103,9 @@
   block:
     - name: Add the Hashicorp repository.
       ansible.builtin.apt_repository:
+        filename: hashicorp
         repo: >-
-          deb [arch=amd64 signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
+          deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
           https://apt.releases.hashicorp.com {{ ubuntu_codename }} main
         state: present
 
