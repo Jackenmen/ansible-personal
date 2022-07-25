@@ -30,6 +30,13 @@
 
 - name: Install kitty.
   block:
+    # without this, kitty crashes when using `--single-instance`
+    - name: Install libstartup-notification0-dev.
+      become: true
+      ansible.builtin.apt:
+        name: libstartup-notification0-dev
+        state: present
+
     - name: Install kitty.
       ansible.builtin.command:
         stdin: "{{ lookup('ansible.builtin.url', kitty_installer_url, split_lines=False) }}"
