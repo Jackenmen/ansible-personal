@@ -1,4 +1,15 @@
 ---
+- name: Add the AnyDesk repository package signing key.
+  tags:
+    - runthisnow
+  ansible.builtin.import_role:
+    name: jack1142.apt_signing_key
+  vars:
+    url: https://keys.anydesk.com/repos/DEB-GPG-KEY
+    key_name: anydesk
+    key_id: null
+    dearmor: true
+
 - name: Add the Enpass repository package signing key.
   ansible.builtin.import_role:
     name: jack1142.apt_signing_key

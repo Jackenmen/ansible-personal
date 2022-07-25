@@ -1,4 +1,19 @@
 ---
+- name: Install AnyDesk.
+  become: true
+  block:
+    - name: Add the AnyDesk repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/anydesk-archive-keyring.gpg]
+          http://deb.anydesk.com/ all main
+        state: present
+
+    - name: Install AnyDesk.
+      ansible.builtin.apt:
+        name: anydesk
+        state: present
+
 - name: Install Audacity.
   become: true
   ansible.builtin.apt:
@@ -70,34 +85,6 @@
     - name: Install Google Chrome.
       ansible.builtin.apt:
         name: google-chrome-stable
-        state: present
-
-- name: Install Google Chrome Remote Desktop.
-  become: true
-  block:
-    - name: Prevent Google Chrome Remote Desktop package from adding its own GPG key.
-      ansible.builtin.copy:
-        dest: /etc/default/chrome-remote-desktop
-        content: |
-          echo -n '/etc/default/chrome-remote-desktop has prevented'
-          echo -n ' Google Chrome Remote Desktop package'
-          echo    ' from adding gpg key to /etc/apt/trusted.gpg.d/'
-          exit 0
-        mode: '0644'
-
-    - name: Add the Google Chrome Remote Desktop repository.
-      ansible.builtin.apt_repository:
-        # This needs to be exactly 'chrome-remote-desktop' to prevent
-        # Google Chrome Remote Desktop from adding this repository for the second time.
-        filename: chrome-remote-desktop
-        repo: >-
-          deb [arch=amd64 signed-by=/usr/share/keyrings/google-archive-keyring.gpg]
-          http://dl.google.com/linux/chrome-remote-desktop/deb/ stable main
-        state: present
-
-    - name: Install Google Chrome Remote Desktop.
-      ansible.builtin.apt:
-        name: chrome-remote-desktop
         state: present
 
 - name: Install Inkscape.
