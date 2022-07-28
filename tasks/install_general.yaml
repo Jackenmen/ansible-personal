@@ -278,6 +278,11 @@
     name: steam
     state: present
 
+- name: Install steamguard-cli.
+  community.general.cargo:
+    name: steamguard-cli
+    state: present
+
 - name: Install Teamviewer.
   become: true
   ansible.builtin.apt:
