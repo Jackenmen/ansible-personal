@@ -48,6 +48,7 @@
     - import_tasks: tasks/install_appimaged.yaml
     - import_tasks: tasks/install_flatpak.yaml
     - import_tasks: tasks/install_language_runtimes.yaml
+    - import_tasks: tasks/install_nala.yaml
 
     - import_tasks: tasks/install_fonts.yaml
     - import_tasks: tasks/install_shell_and_terminal.yaml

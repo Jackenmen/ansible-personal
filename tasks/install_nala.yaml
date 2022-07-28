@@ -1,0 +1,15 @@
+---
+- name: Install nala.
+  become: true
+  block:
+    - name: Add the Volian Scar repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/volian-scar-unstable-archive-keyring.gpg]
+          http://deb.volian.org/volian/ scar main
+        state: present
+
+    - name: Install nala.
+      ansible.builtin.apt:
+        name: nala
+        state: present

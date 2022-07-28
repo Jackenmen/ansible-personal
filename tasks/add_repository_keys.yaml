@@ -88,3 +88,12 @@
     key_name: sublimehq
     key_id: 1EDDE2CDFC025D17F6DA9EC0ADAE6AD28A8F901A
     dearmor: true
+
+- name: Add the Volian Scar repository package signing key.
+  ansible.builtin.import_role:
+    name: jack1142.apt_signing_key
+  vars:
+    url: https://deb.volian.org/volian/scar.key
+    key_name: volian-scar-unstable
+    key_id: A1F2145635241E0E974647AEA87015F3DA22D980
+    dearmor: false
