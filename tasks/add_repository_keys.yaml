@@ -1,7 +1,5 @@
 ---
 - name: Add the AnyDesk repository package signing key.
-  tags:
-    - runthisnow
   ansible.builtin.import_role:
     name: jack1142.apt_signing_key
   vars:
