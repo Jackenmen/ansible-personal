@@ -41,8 +41,6 @@
           - unzip
         state: present
 
-    # snap is required to install chezmoi
-    - import_tasks: tasks/install_snap.yaml
     - import_tasks: tasks/install_dotfiles.yaml
 
     - import_tasks: tasks/add_repository_keys.yaml
