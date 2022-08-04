@@ -268,9 +268,18 @@
 
 - name: Install Spotify.
   become: true
-  community.general.snap:
-    name: spotify
-    state: present
+  block:
+    - name: Add Spotify repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/spotify-archive-keyring.gpg]
+          http://repository.spotify.com stable non-free
+        state: present
+
+    - name: Install Spotify.
+      ansible.builtin.apt:
+        name: spotify-client
+        state: present
 
 - name: Install Steam.
   become: true
