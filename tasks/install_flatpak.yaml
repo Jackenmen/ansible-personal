@@ -1,5 +1,5 @@
 ---
-- name: Install snapd.
+- name: Install Flatpak.
   become: true
   block:
     - name: Install Flatpak.
