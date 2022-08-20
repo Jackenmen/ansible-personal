@@ -123,3 +123,26 @@
           DNSSEC=yes
           DNSOverTLS=yes
         mode: '0644'
+
+- name: Install XMousePasteBlock.
+  block:
+    - name: Check if XMousePasteBlock is installed.
+      become: true
+      ansible.builtin.command:
+        cmd: nix-env -q xmousepasteblock
+      register: xmousepasteblock_installed
+      failed_when: xmousepasteblock_installed.rc not in (0, 1)
+      changed_when: false
+
+    - name: Install XMousePasteBlock.
+      become: true
+      ansible.builtin.command:
+        cmd: nix-env -iA nixpkgs.xmousepasteblock
+      when: xmousepasteblock_installed.rc == 1
+
+    - name: Enable the xmousepasteblock user service.
+      ansible.builtin.systemd:
+        name: xmousepasteblock
+        state: started
+        enabled: true
+        scope: user
