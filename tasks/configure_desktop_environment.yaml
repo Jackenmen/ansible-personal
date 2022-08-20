@@ -103,3 +103,23 @@
           Type=Application
           StartupNotify=true
         mode: '0755'
+
+- name: Use Cloudflare DNS over TLS.
+  become: true
+  block:
+    - name: Create /etc/systemd/resolved.conf.d directory.
+      ansible.builtin.file:
+        path: /etc/systemd/resolved.conf.d
+        state: directory
+        mode: '0755'
+
+    - name: Create configuration file.
+      ansible.builtin.copy:
+        dest: /etc/systemd/resolved.conf.d/use_cloudflare_dns_over_tls.conf
+        content: |
+          [Resolve]
+          DNS=1.1.1.1 1.0.0.1 8.8.8.8
+          FallbackDNS=1.1.1.1 1.0.0.1 8.8.8.8
+          DNSSEC=yes
+          DNSOverTLS=yes
+        mode: '0644'
