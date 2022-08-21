@@ -125,3 +125,5 @@
         state: started
         enabled: true
         scope: user
+      tags:
+        - no-ci  # this task doesn't work in CI due to no user systemd
