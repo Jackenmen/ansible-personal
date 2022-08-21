@@ -9,10 +9,10 @@
 
     # this is needed because the alteration of PATHs in environment.d do not work
     - name: Add Nix's binary paths to PATH.
-      ansible.builtin.blockinfile:
-        path: /etc/profile.d/add-nix-bin-paths.sh
+      ansible.builtin.copy:
+        dest: /etc/profile.d/add-nix-bin-paths.sh
         # noqa var-spacing
-        block: |
+        content: |
           nix_bin_paths="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin"
           if [ -n "${PATH##*${nix_bin_paths}}" ] && [ -n "${PATH##*${nix_bin_paths}:*}" ]; then
               export PATH="${nix_bin_paths}:$PATH"
