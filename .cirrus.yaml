@@ -4,6 +4,7 @@ env:
 test_task:
   # safer timeout value
   timeout_in: 120m
+  stateful: true
 
   compute_engine_instance:
     image_project: ubuntu-os-cloud
