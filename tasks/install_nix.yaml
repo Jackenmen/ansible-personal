@@ -7,6 +7,20 @@
         name: nix-setup-systemd
         state: present
 
+    - name: Add nixpkgs repository.
+      ansible.builtin.lineinfile:
+        path: /root/.nix-channels
+        regexp: '^\s*[^#\s][^ ]+ nixpkgs$'
+        line: https://nixos.org/channels/nixpkgs-unstable nixpkgs
+        create: true
+        state: present
+      register: add_nixpkgs
+
+    - name: Update nix repositories.
+      ansible.builtin.command:
+        cmd: nix-channel --update
+      when: add_nixpkgs.changed
+
     # this is needed because the alteration of PATHs in environment.d do not work
     - name: Add Nix's binary paths to PATH.
       ansible.builtin.copy:
