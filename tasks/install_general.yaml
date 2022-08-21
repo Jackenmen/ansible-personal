@@ -336,3 +336,9 @@
   ansible.builtin.apt:
     name: qdirstat
     state: present
+
+- name: Install xdotool
+  become: true
+  ansible.builtin.apt:
+    name: xdotool
+    state: present
