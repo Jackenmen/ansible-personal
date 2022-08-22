@@ -12,6 +12,7 @@
         path: /root/.nix-channels
         regexp: '^\s*[^#\s][^ ]+ nixpkgs$'
         line: https://nixos.org/channels/nixpkgs-unstable nixpkgs
+        mode: '0644'
         create: true
         state: present
       register: add_nixpkgs
