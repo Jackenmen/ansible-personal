@@ -25,7 +25,6 @@
     - name: Add Nix's binary paths to PATH.
       ansible.builtin.copy:
         dest: /etc/profile.d/add-nix-bin-paths.sh
-        # noqa var-spacing
         content: |
           nix_bin_paths="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin"
           if [ -n "${PATH##*${nix_bin_paths}}" ] && [ -n "${PATH##*${nix_bin_paths}:*}" ]; then
