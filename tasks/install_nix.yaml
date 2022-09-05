@@ -23,12 +23,37 @@
       when: add_nixpkgs.changed
 
     # this is needed because the alteration of PATHs in environment.d do not work
-    - name: Add Nix's binary paths to PATH.
+    - name: Add Nix's paths to various env vars.
       ansible.builtin.copy:
-        dest: /etc/profile.d/add-nix-bin-paths.sh
+        dest: /etc/profile.d/add-nix-paths.sh
         content: |
+          # Expand $PATH to include the directory where nix applications go.
           nix_bin_paths="$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin"
           if [ -n "${PATH##*${nix_bin_paths}}" ] && [ -n "${PATH##*${nix_bin_paths}:*}" ]; then
               export PATH="${nix_bin_paths}:$PATH"
           fi
+
+          # Ensure base distro defaults xdg path are set if nothing filed up some
+          # defaults yet.
+          if [ -z "$XDG_DATA_DIRS" ]; then
+              export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+          fi
+
+          # Desktop files (used by desktop environments within both X11 and Wayland) are
+          # looked for in XDG_DATA_DIRS; make sure it includes the relevant directory for
+          # nix applications' desktop files.
+          nix_xdg_path="$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share"
+          if [ -n "${XDG_DATA_DIRS##*${nix_xdg_path}}" ] && [ -n "${XDG_DATA_DIRS##*${nix_xdg_path}:*}" ]; then
+              export XDG_DATA_DIRS="${nix_xdg_path}:$XDG_DATA_DIRS"
+          fi
+
+          # set NIX_PATH
+          export NIX_PATH="nixpkgs=/nix/var/nix/profiles/per-user/$USER/channels/nixpkgs:/nix/var/nix/profiles/per-user/$USER/channels"
         mode: '0644'
+
+    - name: Set NIX_REMOTE global env var.
+      ansible.builtin.lineinfile:
+        path: /etc/environment
+        regexp: '^NIX_REMOTE='
+        line: "NIX_REMOTE=daemon"
+        state: present
