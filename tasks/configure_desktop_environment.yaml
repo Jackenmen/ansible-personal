@@ -99,7 +99,7 @@
           [Resolve]
           DNS=1.1.1.1 1.0.0.1 8.8.8.8
           FallbackDNS=1.1.1.1 1.0.0.1 8.8.8.8
-          DNSSEC=yes
+          DNSSEC=no
           DNSOverTLS=yes
         mode: '0644'
 
