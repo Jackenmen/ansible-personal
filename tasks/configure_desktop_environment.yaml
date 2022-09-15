@@ -51,11 +51,29 @@
       ansible.builtin.copy:
         dest: /usr/local/sbin/reboot-windows
         content: |
-          #!/bin/sh -e
+          #!/bin/bash -e
 
-          bootnum=$(efibootmgr | sed -nr 's/Boot([0-9A-F]{4})\* Windows Boot Manager/\1/p' | head -n 1)
+          output=$(efibootmgr)
+          boot_order=$(echo $output | sed -nr 's/BootOrder: (.+)/\1/p')
+          declare -A windows_entries
+          while IFS= read -r line; do
+              windows_entries[$line]=""
+          done < <(echo "$output" | sed -nr 's/Boot([0-9A-F]{4})\* Windows Boot Manager/\1/p')
 
-          efibootmgr -n "$bootnum"
+          windows_bootnum=""
+          for bootnum in ${boot_order//,/ }; do
+              if [[ -v 'windows_entries[$bootnum]' ]]; then
+                  windows_bootnum="$bootnum"
+                  break
+              fi
+          done
+
+          if [[ -z "$windows_bootnum" ]]; then
+              echo "Couldn't find Windows Boot Manager entry!"
+              exit 1
+          fi
+
+          efibootmgr -n "$windows_bootnum"
           reboot
         mode: '0755'
         owner: root
