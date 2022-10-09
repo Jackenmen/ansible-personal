@@ -98,6 +98,15 @@
     key_id: 1EDDE2CDFC025D17F6DA9EC0ADAE6AD28A8F901A
     dearmor: true
 
+- name: Add the Eugeny Tabby repository package signing key.
+  ansible.builtin.import_role:
+    name: jack1142.apt_signing_key
+  vars:
+    url: https://packagecloud.io/eugeny/tabby/gpgkey
+    key_name: eugeny_tabby
+    key_id: null
+    dearmor: true
+
 - name: Add the Volian Scar repository package signing key.
   ansible.builtin.import_role:
     name: jack1142.apt_signing_key

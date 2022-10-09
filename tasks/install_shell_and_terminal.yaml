@@ -69,6 +69,21 @@
         name: kitty-terminfo
         state: present
 
+- name: Install Tabby.
+  become: true
+  block:
+    - name: Add the Eugeny Tabby repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/eugeny_tabby-archive-keyring.gpg]
+          https://packagecloud.io/eugeny/tabby/ubuntu/ jammy main
+        state: present
+
+    - name: Install Tabby.
+      ansible.builtin.apt:
+        name: tabby
+        state: present
+
 - name: Change current user's login shell to zsh.
   become: true
   block:
