@@ -81,7 +81,7 @@
 
     - name: Install Tabby.
       ansible.builtin.apt:
-        name: tabby
+        name: tabby-terminal
         state: present
 
 - name: Change current user's login shell to zsh.
