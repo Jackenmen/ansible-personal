@@ -114,10 +114,18 @@
 
 - name: Install heroku-cli.
   become: true
-  community.general.snap:
-    name: heroku
-    classic: true
-    state: present
+  block:
+    - name: Add the Heroku CLI repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/herokucli-archive-keyring.gpg]
+          https://cli-assets.heroku.com/apt ./
+        state: present
+
+    - name: Install Heroku CLI.
+      ansible.builtin.apt:
+        name: heroku
+        state: present
 
 - name: Install inotify-tools.
   become: true

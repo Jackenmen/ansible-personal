@@ -44,6 +44,15 @@
     key_id: E8A032E094D8EB4EA189D270DA418C88A3219F7B
     dearmor: true
 
+- name: Add the Heroku CLI repository package signing key.
+  ansible.builtin.import_role:
+    name: jack1142.apt_signing_key
+  vars:
+    url: https://cli-assets.heroku.com/apt/release.key
+    key_name: herokucli
+    key_id: null
+    dearmor: true
+
 - name: Add the Microsoft repository package signing key.
   ansible.builtin.import_role:
     name: jack1142.apt_signing_key
