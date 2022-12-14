@@ -77,25 +77,10 @@
     name: git-interactive-rebase-tool
     state: present
 
-- name: Install Git Credential Manager (gcmcore).
-  when: "'gcmcore' not in ansible_facts.packages"
-  block:
-    - name: Get latest release data for Git Credential Manager.
-      ansible.builtin.uri:
-        url: https://api.github.com/repos/GitCredentialManager/git-credential-manager/releases/latest
-      register: gcm_release_data
-
-    - name: Download and install gcmcore deb.
-      become: true
-      ansible.builtin.apt:
-        deb: |-
-          {{
-            gcm_release_data.json.assets
-            | map(attribute='browser_download_url')
-            | select('search', '\.deb$')
-            | first
-          }}
-        state: present
+- name: Install Git Credential Manager.
+  ansible.builtin.command:
+    cmd: dotnet tool install -g git-credential-manager
+    creates: "{{ ansible_user_dir }}/.dotnet/tools/git-credential-manager"
 
 - name: Install GitHub CLI (gh).
   become: true
