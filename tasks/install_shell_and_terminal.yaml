@@ -76,7 +76,7 @@
       ansible.builtin.apt_repository:
         repo: >-
           deb [signed-by=/usr/share/keyrings/eugeny_tabby-archive-keyring.gpg]
-          https://packagecloud.io/eugeny/tabby/ubuntu/ jammy main
+          https://packagecloud.io/eugeny/tabby/ubuntu/ {{ ubuntu_codename }} main
         state: present
 
     - name: Install Tabby.
