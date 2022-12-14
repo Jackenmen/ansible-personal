@@ -155,3 +155,26 @@
       community.general.cargo:
         name: cargo-update
         state: present
+
+# .NET
+- name: Install .NET.
+  become: true
+  block:
+    - name: Add the Microsoft packages repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
+          https://packages.microsoft.com/ubuntu/{{ ansible_distribution_version }}/prod {{ ubuntu_codename }} main
+        state: present
+
+    - name: Install .NET 6.0.
+      ansible.builtin.apt:
+        name:
+          - dotnet-sdk-6.0
+          - aspnetcore-runtime-6.0
+
+    - name: Install .NET 7.0.
+      ansible.builtin.apt:
+        name:
+          - dotnet-sdk-7.0
+          - aspnetcore-runtime-7.0
