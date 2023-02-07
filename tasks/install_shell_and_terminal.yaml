@@ -45,11 +45,14 @@
       vars:
         kitty_installer_url: https://sw.kovidgoyal.net/kitty/installer.sh
 
-    - name: Symlink kitty executable.
+    - name: Symlink kitty's executables.
       ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.local/bin/kitty"
-        src: "{{ ansible_user_dir }}/.local/kitty.app/bin/kitty"
+        path: "{{ ansible_user_dir }}/.local/bin/{{ item }}"
+        src: "{{ ansible_user_dir }}/.local/kitty.app/bin/{{ item }}"
         state: link
+      loop:
+        - kitty
+        - kitten
 
     - name: Create ~/.local/share/applications directory.
       ansible.builtin.file:
