@@ -42,6 +42,26 @@
           - sublime-merge
         state: present
 
+    - name: Add custom smerge cli wrapper.
+      become: true
+      ansible.builtin.copy:
+        dest: /usr/local/bin/smerge
+        content: |
+          #!/usr/bin/sh
+          path_without_local_bin="$(echo "${PATH}" | sed "s@$(dirname "$(realpath "$0")"):@@g")"
+          smerge_executable="$(PATH="$path_without_local_bin" command -v smerge)"
+
+          if [ "$#" -ne 0 ] && ! pgrep sublime_merge > /dev/null; then
+              "$smerge_executable"
+              while ! pgrep sublime_merge > /dev/null; do
+                  sleep 0.1
+              done
+              sleep 0.5
+          fi
+
+          exec "$smerge_executable" "$@"
+        mode: '0755'
+
     - name: Create Installed Packages folder in Sublime Text's config directory.
       ansible.builtin.file:
         path: "{{ installed_packages_path }}"
