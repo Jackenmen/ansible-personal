@@ -290,6 +290,12 @@
     name: pavucontrol
     state: present
 
+- name: Install RustDesk.
+  become: true
+  ansible.builtin.apt:
+    name: rustdesk
+    state: present
+
 - name: Install Spotify.
   become: true
   block:
@@ -359,4 +365,11 @@
   become: true
   ansible.builtin.apt:
     name: xdotool
+    state: present
+
+# dependency superseding libappindicator3-1
+- name: Install libayatana-appindicator
+  become: true
+  ansible.builtin.apt:
+    name: libayatana-appindicator3-1
     state: present
