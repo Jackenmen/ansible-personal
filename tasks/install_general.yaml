@@ -185,6 +185,12 @@
           - mkvtoolnix-gui
         state: present
 
+- name: Install ncdu.
+  become: true
+  ansible.builtin.apt:
+    name: ncdu
+    state: present
+
 - name: Install OBS Studio.
   become: true
   block:
