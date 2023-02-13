@@ -135,6 +135,12 @@
         name: ksnip
         state: present
 
+- name: Install MangoHud.
+  become: true
+  ansible.builtin.apt:
+    name: mangohud:i386
+    state: present
+
 - name: Install Microsoft Edge.
   become: true
   block:
