@@ -349,6 +349,12 @@
     deb: https://www.unifiedremote.com/download/linux-x64-deb
     state: present
 
+- name: Install unrar.
+  become: true
+  ansible.builtin.apt:
+    name: unrar
+    state: present
+
 - name: Install VLC.
   become: true
   ansible.builtin.apt:
