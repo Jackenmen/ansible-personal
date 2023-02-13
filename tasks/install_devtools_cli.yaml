@@ -207,6 +207,12 @@
     name: trash-cli
     state: present
 
+- name: Install tree.
+  become: true
+  ansible.builtin.apt:
+    name: tree
+    state: present
+
 - name: Install virtualenv.
   become: true
   community.general.pipx:
