@@ -265,6 +265,12 @@
         name: onlyoffice-desktopeditors
         state: present
 
+- name: Install PDFsam.
+  become: true
+  ansible.builtin.apt:
+    name: pdfsam
+    state: present
+
 - name: Install PlayOnLinux and winbind (Office's requirement).
   become: true
   ansible.builtin.apt:
