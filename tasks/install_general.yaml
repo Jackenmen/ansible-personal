@@ -296,6 +296,12 @@
     name: rustdesk
     state: present
 
+- name: Install screen.
+  become: true
+  ansible.builtin.apt:
+    name: screen
+    state: present
+
 - name: Install Spotify.
   become: true
   block:
