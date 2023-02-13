@@ -1,4 +1,13 @@
 ---
+- name: Add my personal repository's package signing key.
+  ansible.builtin.import_role:
+    name: jack1142.apt_signing_key
+  vars:
+    url: https://apt.fury.io/Jackenmen/gpg.key
+    key_name: fury-jackenmen
+    key_id: 850675AD3E47B65D4758F7E729B631E994F3538A
+    dearmor: true
+
 - name: Add the AnyDesk repository package signing key.
   ansible.builtin.import_role:
     name: jack1142.apt_signing_key

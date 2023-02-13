@@ -1,0 +1,8 @@
+---
+- name: Add my personal apt repository on Gemfury.
+  become: true
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [signed-by=/usr/share/keyrings/fury-jackenmen-archive-keyring.gpg]
+      https://apt.fury.io/jackenmen/ * *
+    state: present

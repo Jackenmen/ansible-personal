@@ -44,6 +44,7 @@
     - import_tasks: tasks/install_dotfiles.yaml
 
     - import_tasks: tasks/add_repository_keys.yaml
+    - import_tasks: tasks/add_personal_apt_repository.yaml
 
     - import_tasks: tasks/install_appimaged.yaml
     - import_tasks: tasks/install_flatpak.yaml
