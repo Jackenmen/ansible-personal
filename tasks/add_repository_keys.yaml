@@ -50,7 +50,7 @@
   vars:
     url: https://apt.releases.hashicorp.com/gpg
     key_name: hashicorp
-    key_id: E8A032E094D8EB4EA189D270DA418C88A3219F7B
+    key_id: 798AEC654E5C15428C8E42EEAA16FCBCA621E701
     dearmor: true
 
 - name: Add the Heroku CLI repository package signing key.
