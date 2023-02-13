@@ -43,6 +43,12 @@
     name: cloc
     state: present
 
+- name: Install cmake.
+  become: true
+  ansible.builtin.apt:
+    name: cmake
+    state: present
+
 - name: Install cppcheck.
   become: true
   ansible.builtin.apt:
