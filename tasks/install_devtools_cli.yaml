@@ -56,7 +56,7 @@
     state: present
 
 - name: Install diagnostic-languageserver.
-  community.general.yarn:
+  community.general.npm:
     name: diagnostic-languageserver
     global: true
     state: present
