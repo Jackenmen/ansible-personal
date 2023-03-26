@@ -123,19 +123,17 @@
 
 - name: Install XMousePasteBlock.
   block:
-    - name: Check if XMousePasteBlock is installed.
-      become: true
-      ansible.builtin.command:
-        cmd: nix-env -q xmousepasteblock
-      register: xmousepasteblock_installed
-      failed_when: xmousepasteblock_installed.rc not in (0, 1)
-      changed_when: false
+    - name: Add XMousePasteBlock repository.
+      ansible.builtin.apt_repository:
+        repo: ppa:jackenmen/xmousepasteblock
+        codename: "{{ ubuntu_codename }}"
+        state: present
 
     - name: Install XMousePasteBlock.
       become: true
-      ansible.builtin.command:
-        cmd: nix-env -iA nixpkgs.xmousepasteblock
-      when: xmousepasteblock_installed.rc == 1
+      ansible.builtin.apt:
+        name: xmousepasteblock
+        state: present
 
     - name: Enable the xmousepasteblock user service.
       ansible.builtin.systemd:
