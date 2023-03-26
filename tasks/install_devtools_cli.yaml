@@ -177,6 +177,13 @@
     name: pre-commit
     state: present
 
+- name: Install pyright.
+  become: true
+  community.general.npm:
+    name: pyright
+    global: true
+    state: present
+
 - name: Install redial.
   become: true
   community.general.pipx:
