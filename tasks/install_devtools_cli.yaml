@@ -126,7 +126,7 @@
 
 - name: Install little-helpers.
   ansible.builtin.git:  # noqa git-latest
-    repo: https://github.com/jack1142/little-helpers
+    repo: https://github.com/Jackenmen/little-helpers
     dest: "{{ ansible_user_dir }}/little-helpers"
     update: false
 
@@ -188,7 +188,7 @@
   become: true
   community.general.pipx:
     name: redial
-    source: git+https://github.com/jack1142/redial@kitty
+    source: git+https://github.com/Jackenmen/redial@kitty
     state: present
 
 - name: Install ripgrep.

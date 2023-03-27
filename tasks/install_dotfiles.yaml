@@ -14,5 +14,5 @@
 
 - name: Provision dotfiles with chezmoi.
   ansible.builtin.command:
-    cmd: chezmoi init --apply jack1142
+    cmd: chezmoi init --apply Jackenmen
     creates: "{{ ansible_user_dir }}/.local/share/chezmoi/.git/HEAD"

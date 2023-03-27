@@ -11,7 +11,7 @@
 
     - name: Get latest release data for go-appimage.
       ansible.builtin.uri:
-        url: https://api.github.com/repos/jack1142/go-appimage/releases/tags/continuous
+        url: https://api.github.com/repos/Jackenmen/go-appimage/releases/tags/continuous
       register: go_appimage_release_data
 
     - name: Download go-appimage to ~/Applications folder.
