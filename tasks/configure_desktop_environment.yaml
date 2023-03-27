@@ -124,6 +124,7 @@
 - name: Install XMousePasteBlock.
   block:
     - name: Add XMousePasteBlock repository.
+      become: true
       ansible.builtin.apt_repository:
         repo: ppa:jackenmen/xmousepasteblock
         codename: "{{ ubuntu_codename }}"
