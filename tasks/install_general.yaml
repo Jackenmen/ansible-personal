@@ -205,39 +205,6 @@
     name: opera
     state: present
 
-- name: Install Microsoft Teams.
-  block:
-    - name: Add the Microsoft Teams repository.
-      become: true
-      ansible.builtin.apt_repository:
-        # This needs to be exactly 'teams' to prevent Microsoft Teams
-        # from adding this repository for the second time.
-        filename: teams
-        repo: >-
-          deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg]
-          https://packages.microsoft.com/repos/ms-teams stable main
-        state: present
-
-    - name: Install Microsoft Teams.
-      become: true
-      ansible.builtin.apt:
-        name: teams
-        state: present
-
-    - name: Create ~/.config/Microsoft/Microsoft Teams directory.
-      ansible.builtin.file:
-        path: "{{ ansible_user_dir }}/.config/Microsoft/Microsoft Teams"
-        state: directory
-        mode: '0755'
-
-    - name: Disable auto-start of MS Teams.
-      ansible.builtin.template:
-        src: templates/ms-teams-desktop-config.json.j2
-        dest: "{{ item }}"
-        mode: '0664'
-      vars:
-        item: "{{ ansible_user_dir }}/.config/Microsoft/Microsoft Teams/desktop-config.json"
-
 - name: Install Musixmatch.
   become: true
   community.general.snap:

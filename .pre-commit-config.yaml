@@ -11,7 +11,6 @@ repos:
         exclude: |-
           (?x)^
           templates/Cinnamenu@json\.json\.j2
-          |templates/ms-teams-desktop-config\.json\.j2
           $
       - id: mixed-line-ending
         args:
