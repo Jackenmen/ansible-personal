@@ -102,9 +102,9 @@
   ansible.builtin.import_role:
     name: jack1142.apt_signing_key
   vars:
-    url: https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg
+    url: https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg
     key_name: spotify
-    key_id: F9A211976ED662F00E59361E5E3C45D7B312C643
+    key_id: E27409F51D1B66337F2D2F417A3A762FAFD4A51F
     dearmor: true
 
 - name: Add the Sublime HQ repository package signing key.
