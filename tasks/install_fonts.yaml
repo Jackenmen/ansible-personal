@@ -90,20 +90,6 @@
         src: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/SourceCodePro.zip
         dest: /usr/local/share/fonts/SauceCodePro
       when: saucecodepro.changed
-
-    - name: Find Windows Compatible versions of the font.
-      ansible.builtin.find:
-        paths: /usr/local/share/fonts/SauceCodePro
-        patterns: "* Windows Compatible.ttf"
-      register: saucecodepro_find_results
-      when: saucecodepro.changed
-
-    - name: Remove Windows Compatible versions of the font.
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: absent
-      loop: "{{ saucecodepro_find_results.files }}"
-      when: saucecodepro.changed
   rescue:
     - name: Remove SauceCodePro folder.
       ansible.builtin.file:
