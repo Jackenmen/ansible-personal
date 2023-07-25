@@ -62,6 +62,15 @@
     key_id: null
     dearmor: true
 
+- name: Add the Kubic repository package signing key.
+  ansible.builtin.import_role:
+    name: Jackenmen.apt_signing_key
+  vars:
+    url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_{{ ansible_distribution_version }}/Release.key
+    key_name: devel_kubic_libcontainers_unstable
+    key_id: null
+    dearmor: true
+
 - name: Add the Microsoft repository package signing key.
   ansible.builtin.import_role:
     name: Jackenmen.apt_signing_key

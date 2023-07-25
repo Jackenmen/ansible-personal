@@ -163,13 +163,21 @@
 
 - name: Install Podman, docker-compose, and podman-docker wrapper.
   become: true
-  ansible.builtin.apt:
-    name:
-      - podman
-      - docker-compose
-      # This is a wrapper script that acts like the original docker implementation.
-      - podman-docker
-    state: present
+  block:
+    - name: Add the Kubic repository.
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/usr/share/keyrings/devel_kubic_libcontainers_unstable-archive-keyring.gpg]
+          https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_{{ ansible_distribution_version }}/ /
+    - name: Install Podman, docker-compose, and podman-docker wrapper.
+      ansible.builtin.apt:
+        name:
+          - podman
+          - docker-compose
+          # This is a wrapper script that acts like the original docker implementation.
+          - podman-docker
+          - runc
+        state: present
 
 - name: Install pre-commit.
   become: true
