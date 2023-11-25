@@ -178,3 +178,9 @@
         name:
           - dotnet-sdk-7.0
           - aspnetcore-runtime-7.0
+
+    - name: Install .NET 8.0.
+      ansible.builtin.apt:
+        name:
+          - dotnet-sdk-8.0
+          - aspnetcore-runtime-8.0
