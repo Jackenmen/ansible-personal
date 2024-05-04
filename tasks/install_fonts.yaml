@@ -14,6 +14,61 @@
         name: ttf-mscorefonts-installer
         state: present
 
+- name: Install Microsoft's non-free Office fonts.
+  block:
+    - name: Create temporary directory for non-free Office fonts
+      ansible.builtin.tempfile:
+        state: directory
+      register: powerpoint_file
+
+    - name: Download PowerPoint Viewer installer.
+      ansible.builtin.get_url:
+        url: https://archive.org/download/PowerPointViewer_201801/PowerPointViewer.exe
+        dest: "{{ powerpoint_file.path }}/PowerPointViewer.exe"
+        checksum: sha256:249473568eba7a1e4f95498acba594e0f42e6581add4dead70c1dfb908a09423
+
+    - name: Extract part of the installer with the fonts.
+      ansible.builtin.command:
+        argv:
+          - cabextract
+          - "{{ powerpoint_file.path }}/PowerPointViewer.exe"
+          - -F
+          - ppviewer.cab
+        chdir: "{{ powerpoint_file.path }}"
+
+    - name: Extract TTC fonts.
+      ansible.builtin.command:
+        argv:
+          - cabextract
+          - "{{ powerpoint_file.path }}/ppviewer.cab"
+          - -F
+          - "*.TTC"
+          - -d
+          - "{{ powerpoint_file.path }}/ppviewer/"
+
+    - name: Extract TTF fonts.
+      ansible.builtin.command:
+        argv:
+          - cabextract
+          - "{{ powerpoint_file.path }}/ppviewer.cab"
+          - -F
+          - "*.TTF"
+          - -d
+          - "{{ powerpoint_file.path }}/ppviewer/"
+
+    - name: Install fonts.
+      become: true
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ powerpoint_file.path }}/ppviewer"
+        dest: /usr/local/share/fonts
+  always:
+    - name: Remove temporary file.
+      ansible.builtin.file:
+        path: "{{ powerpoint_file.path }}"
+        state: absent
+      when: powerpoint_file.path is defined
+
 - name: Install Inconsolata font.
   become: true
   block:
